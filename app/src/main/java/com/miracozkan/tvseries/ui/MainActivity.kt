@@ -1,8 +1,7 @@
 package com.miracozkan.tvseries.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.miracozkan.tvseries.R
@@ -11,7 +10,6 @@ import com.miracozkan.tvseries.datalayer.model.VideoFragmentModel
 import com.miracozkan.tvseries.datalayer.network.RetrofitClient
 import com.miracozkan.tvseries.utils.DependencyUtil
 import com.miracozkan.tvseries.viewmodel.PopularSeriesViewModel
-import com.miracozkan.tvseries.viewmodel.VideoViewModel
 import com.miracozkan.tvseries.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -31,29 +29,20 @@ class MainActivity : AppCompatActivity() {
         ).get(PopularSeriesViewModel::class.java)
     }
 
-//    private val videoRepository by lazy {
-//        DependencyUtil.getVideoRepository(RetrofitClient.getClient(), param1.toString())
-//    }
-//    private val videoViewModel by lazy {
-//        ViewModelProviders.of(
-//            this,
-//            ViewModelFactory(videoRepository)
-//        ).get(VideoViewModel::class.java)
-//    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+    }
 
-        val seriesData: VideoFragmentModel by lazy { VideoFragmentModel() }
-
+    override fun onStart() {
+        super.onStart()
         popularSeriesViewModel.popularSeriesList.observe(this, Observer { _seriesList ->
             (vpTrailers.adapter as TrailerPagerAdapter).setVideoList(_seriesList!!)
         })
 
         vpTrailers.apply {
             adapter = TrailerPagerAdapter(supportFragmentManager)
-            currentItem = 5
+            offscreenPageLimit = 3
         }
     }
 

@@ -14,11 +14,11 @@ import com.miracozkan.tvseries.datalayer.model.Poster
 //│ 13/07/19 - 18:46            │
 //└─────────────────────────────┘
 
-class SmallImageAdapter(
+class VideoPosterAdapter(
     private var imageList: List<Poster>? = null
-) : RecyclerView.Adapter<SmallImageViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SmallImageViewHolder =
-        SmallImageViewHolder(parent)
+) : RecyclerView.Adapter<VideoPosterViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoPosterViewHolder =
+        VideoPosterViewHolder(parent)
 
     override fun getItemCount(): Int {
         imageList?.let {
@@ -27,7 +27,7 @@ class SmallImageAdapter(
         return 0
     }
 
-    override fun onBindViewHolder(holder: SmallImageViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: VideoPosterViewHolder, position: Int) {
         holder.bind(imageList!![position])
     }
 

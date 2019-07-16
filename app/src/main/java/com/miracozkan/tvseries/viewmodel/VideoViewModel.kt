@@ -22,8 +22,8 @@ class VideoViewModel(private val videoRepository: VideoRepository) : ViewModel()
     private val parentJob = Job()
     private val coroutineContext: CoroutineContext get() = parentJob + Dispatchers.Main
     private val scope = CoroutineScope(coroutineContext)
-    val seriesVideo: ArrayList<List<VideoResult>> by lazy { ArrayList<List<VideoResult>>() }
-    val seriesImage: ArrayList<List<Poster>> by lazy { ArrayList<List<Poster>>() }
+    val seriesVideo: MutableLiveData<List<VideoResult>> by lazy { MutableLiveData<List<VideoResult>>() }
+    val seriesImage: MutableLiveData<List<Poster>> by lazy { MutableLiveData<List<Poster>>() }
 
     init {
         getVideos()
@@ -32,13 +32,13 @@ class VideoViewModel(private val videoRepository: VideoRepository) : ViewModel()
 
     private fun getVideos() {
         scope.launch {
-            seriesVideo.add(videoRepository.getSeriesVideo())
+            seriesVideo.postValue(videoRepository.getSeriesVideo())
         }
     }
 
     private fun getImages() {
         scope.launch {
-            seriesImage.add(videoRepository.getSeriesImages())
+            seriesImage.postValue(videoRepository.getSeriesImages())
         }
     }
 

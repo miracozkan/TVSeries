@@ -5,11 +5,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.util.SparseArray
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import at.huber.youtubeExtractor.VideoMeta
@@ -26,9 +27,8 @@ import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.upstream.*
 import com.google.android.exoplayer2.util.Util
 import com.miracozkan.tvseries.R
-import com.miracozkan.tvseries.adapter.SmallImageAdapter
+import com.miracozkan.tvseries.adapter.VideoPosterAdapter
 import com.miracozkan.tvseries.datalayer.model.PopularSeriesResult
-import com.miracozkan.tvseries.datalayer.model.VideoFragmentModel
 import com.miracozkan.tvseries.datalayer.network.RetrofitClient
 import com.miracozkan.tvseries.utils.DependencyUtil
 import com.miracozkan.tvseries.viewmodel.VideoViewModel
@@ -92,10 +92,10 @@ class VideoFragment : Fragment() {
 
         txtTitle.text = param1.originalName
         txtLike.text = param1.voteCount.toString()
-        txtTomato.text = param1.voteAverage.toString()
+        txtDislike.text = param1.voteAverage.toString()
 
         with(recycImages) {
-            adapter = SmallImageAdapter()
+            adapter = VideoPosterAdapter()
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
 
@@ -103,35 +103,37 @@ class VideoFragment : Fragment() {
          * Network Req
          */
 
-        if (!videoViewModel.seriesVideo.isNullOrEmpty()) {
-            exoPlayer?.videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
-            object : YouTubeExtractor(context!!) {
-                override fun onExtractionComplete(ytFiles: SparseArray<YtFile>?, vMeta: VideoMeta) {
-                    val iTag = 18// 135 -> 480p, 18 -> 360p, 17 -> 144p
-                    if (ytFiles?.get(iTag) != null && ytFiles.get(iTag).url != null) {
-                        val downloadUrl = ytFiles.get(iTag).url
-                        val extractorsFactory = DefaultExtractorsFactory()
-                        val mediaSource = ExtractorMediaSource.Factory(mediaDataSourceFactory)
-                            .setExtractorsFactory(extractorsFactory)
-                            .createMediaSource(Uri.parse(downloadUrl))
-                        exoPlayer?.prepare(mediaSource, true, false)
-                        exoPlayer?.seekTo(5000)
-                    } else {
-                        val toast =
-                            Toast.makeText(context, "Video Başlatılamadı Tekrar Deneyin", Toast.LENGTH_LONG)
-                        toast.show()
+        videoViewModel.seriesVideo.observe(this, Observer { _videoList ->
+            if (!_videoList.isNullOrEmpty()) {
+                exoPlayer?.videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
+                object : YouTubeExtractor(context!!) {
+                    override fun onExtractionComplete(ytFiles: SparseArray<YtFile>?, vMeta: VideoMeta) {
+                        val iTag = 18// 135 -> 480p, 18 -> 360p, 17 -> 144p
+                        if (ytFiles?.get(iTag) != null && ytFiles.get(iTag).url != null) {
+                            val downloadUrl = ytFiles.get(iTag).url
+                            val extractorsFactory = DefaultExtractorsFactory()
+                            val mediaSource = ExtractorMediaSource.Factory(mediaDataSourceFactory)
+                                .setExtractorsFactory(extractorsFactory)
+                                .createMediaSource(Uri.parse(downloadUrl))
+                            exoPlayer?.prepare(mediaSource, true, false)
+                            exoPlayer?.seekTo(5000)
+                        } else {
+                            Toast.makeText(activity, "Something went wrong!!!", Toast.LENGTH_LONG).show()
+                        }
                     }
-                }
-            }.extract("http://youtube.com/watch?v=${videoViewModel.seriesVideo.first()[0].key}", true, true)
-        }
+                }.extract("http://youtube.com/watch?v=${_videoList[0].key}", true, true)
+            } else {
+                Log.e("VideoReq", "this is null : ${param1.name}")
+            }
+        })
 
-
-        if (videoViewModel.seriesImage.isNullOrEmpty()) {
-            Log.e("VideoFragmant", param1.originalName!!)
-        } else {
-            (recycImages.adapter as SmallImageAdapter).setNewItem(videoViewModel.seriesImage.first())
-        }
-
+        videoViewModel.seriesImage.observe(this, Observer { _posterList ->
+            if (!_posterList.isNullOrEmpty()) {
+                (recycImages.adapter as VideoPosterAdapter).setNewItem(_posterList)
+            } else {
+                Log.e("PosterReq", "this is null : ${param1.name}")
+            }
+        })
     }
 
     /**

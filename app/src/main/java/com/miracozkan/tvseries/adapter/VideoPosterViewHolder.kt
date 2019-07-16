@@ -18,14 +18,14 @@ import com.squareup.picasso.Picasso
 //│ 13/07/19 - 18:47            │
 //└─────────────────────────────┘
 
-class SmallImageViewHolder(private val parent: ViewGroup) : RecyclerView.ViewHolder(
+class VideoPosterViewHolder(private val parent: ViewGroup) : RecyclerView.ViewHolder(
     LayoutInflater.from(parent.context).inflate(R.layout.adapter_item_small_trailer, parent, false)
 ) {
 
     fun bind(model: Poster) {
         Picasso.get()
             .load("https://image.tmdb.org/t/p/w200" + model.filePath)
-            .resize(160, 90)
+            .resize(108, 192)
             .centerCrop()
             .into(itemView.findViewById<AppCompatImageView>(R.id.imgThumbnail))
     }
