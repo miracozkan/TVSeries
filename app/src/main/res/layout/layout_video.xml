@@ -32,6 +32,26 @@
             app:layout_constraintTop_toTopOf="@+id/txtLike"/>
 
     <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtGoDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_rate"
+            android:drawablePadding="4dp"
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="8dp"
+            android:text="@string/go_series_detail"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            tools:elevation="10dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/txtLike"
+            app:layout_constraintTop_toTopOf="@+id/txtLike"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/txtLike"
             android:layout_width="wrap_content"
             android:layout_height="48dp"

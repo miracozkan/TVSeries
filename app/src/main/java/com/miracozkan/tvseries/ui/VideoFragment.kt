@@ -37,7 +37,7 @@ import kotlinx.android.synthetic.main.fragment_video.*
 import kotlinx.android.synthetic.main.layout_video.*
 
 
-class VideoFragment : Fragment() {
+class VideoFragment : Fragment(), View.OnClickListener {
 
     private lateinit var param1: PopularSeriesResult
 
@@ -71,28 +71,32 @@ class VideoFragment : Fragment() {
 
     }
 
-    @SuppressLint("StaticFieldLeak")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        bandwidthMeter = DefaultBandwidthMeter()
-        mediaDataSourceFactory = buildDataSourceFactory(true)
-
-        if (exoPlayer == null)
-            exoPlayer = ExoPlayerFactory.newSimpleInstance(
-                activity,
-                DefaultTrackSelector(), DefaultLoadControl()
-            )
-
-        simpleExoPlayerView.apply {
-            player = exoPlayer
-            useController = false
-            resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
-        }
 
         txtTitle.text = param1.originalName
         txtLike.text = param1.voteCount.toString()
         txtDislike.text = param1.voteAverage.toString()
+
+        txtDislike.setOnClickListener(this)
+        txtLike.setOnClickListener(this)
+        txtGoDetail.setOnClickListener(this)
+
+        bandwidthMeter = DefaultBandwidthMeter()
+        mediaDataSourceFactory = buildDataSourceFactory(true)
+
+        if (exoPlayer == null) {
+            exoPlayer = ExoPlayerFactory.newSimpleInstance(
+                activity,
+                DefaultTrackSelector(), DefaultLoadControl()
+            )
+        }
+
+        pvExoPlayer.apply {
+            player = exoPlayer
+            useController = false
+            resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
+        }
 
         with(recycImages) {
             adapter = VideoPosterAdapter()
@@ -105,35 +109,41 @@ class VideoFragment : Fragment() {
 
         videoViewModel.seriesVideo.observe(this, Observer { _videoList ->
             if (!_videoList.isNullOrEmpty()) {
-                exoPlayer?.videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
-                object : YouTubeExtractor(context!!) {
-                    override fun onExtractionComplete(ytFiles: SparseArray<YtFile>?, vMeta: VideoMeta) {
-                        val iTag = 18// 135 -> 480p, 18 -> 360p, 17 -> 144p
-                        if (ytFiles?.get(iTag) != null && ytFiles.get(iTag).url != null) {
-                            val downloadUrl = ytFiles.get(iTag).url
-                            val extractorsFactory = DefaultExtractorsFactory()
-                            val mediaSource = ExtractorMediaSource.Factory(mediaDataSourceFactory)
-                                .setExtractorsFactory(extractorsFactory)
-                                .createMediaSource(Uri.parse(downloadUrl))
-                            exoPlayer?.prepare(mediaSource, true, false)
-                            exoPlayer?.seekTo(5000)
-                        } else {
-                            Toast.makeText(activity, "Something went wrong!!!", Toast.LENGTH_LONG).show()
-                        }
-                    }
-                }.extract("http://youtube.com/watch?v=${_videoList[0].key}", true, true)
+                releaseExo(_videoList[0].key!!)
             } else {
-                Log.e("VideoReq", "this is null : ${param1.name}")
+                releaseExo("iwNp2E1aV3Q")
+                Toast.makeText(
+                    activity,
+                    "This TV Series Has Not Trailer",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         })
 
         videoViewModel.seriesImage.observe(this, Observer { _posterList ->
             if (!_posterList.isNullOrEmpty()) {
                 (recycImages.adapter as VideoPosterAdapter).setNewItem(_posterList)
-            } else {
-                Log.e("PosterReq", "this is null : ${param1.name}")
             }
         })
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private fun releaseExo(url: String) {
+        exoPlayer?.videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
+        object : YouTubeExtractor(context!!) {
+            override fun onExtractionComplete(ytFiles: SparseArray<YtFile>?, vMeta: VideoMeta) {
+                val iTag = 18 // 135 -> 480p, 18 -> 360p, 17 -> 144p
+                if (ytFiles?.get(iTag) != null && ytFiles.get(iTag).url != null) {
+                    val downloadUrl = ytFiles.get(iTag).url
+                    val extractorsFactory = DefaultExtractorsFactory()
+                    val mediaSource = ExtractorMediaSource.Factory(mediaDataSourceFactory)
+                        .setExtractorsFactory(extractorsFactory)
+                        .createMediaSource(Uri.parse(downloadUrl))
+                    exoPlayer?.prepare(mediaSource, true, false)
+                    exoPlayer?.seekTo(5000)
+                }
+            }
+        }.extract("http://youtube.com/watch?v=$url", true, true)
     }
 
     /**
@@ -204,5 +214,19 @@ class VideoFragment : Fragment() {
                     putParcelable("seriesData", param1)
                 }
             }
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.txtDislike -> {
+
+            }
+            R.id.txtLike -> {
+
+            }
+            R.id.txtGoDetail -> {
+
+            }
+        }
     }
 }
