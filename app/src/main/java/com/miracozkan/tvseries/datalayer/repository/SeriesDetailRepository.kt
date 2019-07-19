@@ -1,9 +1,9 @@
 package com.miracozkan.tvseries.datalayer.repository
 
 import com.miracozkan.tvseries.BuildConfig
-import com.miracozkan.tvseries.datalayer.model.Poster
-import com.miracozkan.tvseries.datalayer.model.VideoResult
+import com.miracozkan.tvseries.datalayer.model.SeriesReviews
 import com.miracozkan.tvseries.datalayer.network.ProjectService
+import com.miracozkan.tvseries.datalayer.network.response.GetSeriesDetail
 import com.miracozkan.tvseries.utils.BaseRepository
 
 
@@ -13,23 +13,22 @@ import com.miracozkan.tvseries.utils.BaseRepository
 //│ ─────────────────────────── │
 //│ mirac.ozkan123@gmail.com    │            
 //│ ─────────────────────────── │
-//│ 13/07/19 - 17:51            │
+//│ 18/07/19 - 10:01            │
 //└─────────────────────────────┘
 
-class VideoRepository(val projectService: ProjectService, private val videoId: String) : BaseRepository() {
+class SeriesDetailRepository(private val projectService: ProjectService, private val seriesID: Int) : BaseRepository() {
 
-
-    suspend fun getSeriesVideo(): MutableList<VideoResult> {
+    suspend fun getSeriesReview(): MutableList<SeriesReviews> {
         return safeApiCall(
-            call = { projectService.getSeriesVideoAsync(videoId, BuildConfig.API_KEY).await() },
-            error = "Error fetching news"
+                call = { projectService.getSeriesReviewsAsync(seriesID, BuildConfig.API_KEY).await() },
+                error = "Error fetching news"
         )?.results!!.toMutableList()
     }
 
-    suspend fun getSeriesImages(): MutableList<Poster> {
+    suspend fun getSeriesDetail(): GetSeriesDetail {
         return safeApiCall(
-            call = { projectService.getSeriesImageAsync(videoId, BuildConfig.API_KEY).await() },
-            error = "Error fetching news"
-        )?.posters!!.toMutableList()
+                call = { projectService.getSeriesDetailAsync(seriesID, BuildConfig.API_KEY).await() },
+                error = "Error fetching news"
+        )!!
     }
 }

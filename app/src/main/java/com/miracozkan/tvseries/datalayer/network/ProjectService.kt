@@ -1,8 +1,6 @@
 package com.miracozkan.tvseries.datalayer.network
 
-import com.miracozkan.tvseries.datalayer.network.response.GetImages
-import com.miracozkan.tvseries.datalayer.network.response.GetPopular
-import com.miracozkan.tvseries.datalayer.network.response.GetVideo
+import com.miracozkan.tvseries.datalayer.network.response.*
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET
@@ -37,4 +35,16 @@ interface ProjectService {
         @Path("seriesID") seriesID: String,
         @Query("api_key") apiKey: String
     ): Deferred<Response<GetImages>>
+
+    @GET("tv/{seriesID}/reviews")
+    fun getSeriesReviewsAsync(
+            @Path("seriesID") seriesID: Int,
+            @Query("api_key") apiKey: String
+    ): Deferred<Response<GetSeriesReviews>>
+
+    @GET("tv/{seriesID}")
+    fun getSeriesDetailAsync(
+            @Path("seriesID") seriesID: Int,
+            @Query("api_key") apiKey: String
+    ): Deferred<Response<GetSeriesDetail>>
 }

@@ -1,7 +1,6 @@
-package com.miracozkan.tvseries.viewmodel
+package com.miracozkan.tvseries.utils
 
 import android.util.Log
-import com.miracozkan.tvseries.utils.Output
 import retrofit2.Response
 import java.io.IOException
 

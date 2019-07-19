@@ -1,9 +1,11 @@
-package com.miracozkan.tvseries.viewmodel
+package com.miracozkan.tvseries.utils
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.miracozkan.tvseries.datalayer.repository.PopularSeriesRepository
 import com.miracozkan.tvseries.datalayer.repository.VideoRepository
+import com.miracozkan.tvseries.viewmodel.PopularSeriesViewModel
+import com.miracozkan.tvseries.viewmodel.VideoViewModel
 
 
 // Code with ❤

@@ -10,8 +10,8 @@ import com.miracozkan.tvseries.adapter.TrailerPagerAdapter
 import com.miracozkan.tvseries.datalayer.model.VideoFragmentModel
 import com.miracozkan.tvseries.datalayer.network.RetrofitClient
 import com.miracozkan.tvseries.utils.DependencyUtil
+import com.miracozkan.tvseries.utils.ViewModelFactory
 import com.miracozkan.tvseries.viewmodel.PopularSeriesViewModel
-import com.miracozkan.tvseries.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {

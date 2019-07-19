@@ -1,6 +1,7 @@
 package com.miracozkan.tvseries.ui
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -31,13 +32,15 @@ import com.miracozkan.tvseries.adapter.VideoPosterAdapter
 import com.miracozkan.tvseries.datalayer.model.PopularSeriesResult
 import com.miracozkan.tvseries.datalayer.network.RetrofitClient
 import com.miracozkan.tvseries.utils.DependencyUtil
+import com.miracozkan.tvseries.utils.ViewModelFactory
 import com.miracozkan.tvseries.viewmodel.VideoViewModel
-import com.miracozkan.tvseries.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_video.*
 import kotlinx.android.synthetic.main.layout_video.*
 
 
 class VideoFragment : Fragment(), View.OnClickListener {
+
+    private val detailActivityIntent by lazy { Intent(activity, SeriesDetailActivity::class.java) }
 
     private lateinit var param1: PopularSeriesResult
 
@@ -50,7 +53,7 @@ class VideoFragment : Fragment(), View.OnClickListener {
     }
     private val videoViewModel by lazy {
         ViewModelProviders.of(
-            this,
+                this,
             ViewModelFactory(videoRepository)
         ).get(VideoViewModel::class.java)
     }
@@ -63,8 +66,8 @@ class VideoFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         Log.e("VideoID", param1.id.toString())
         return inflater.inflate(R.layout.fragment_video, container, false)
@@ -87,8 +90,8 @@ class VideoFragment : Fragment(), View.OnClickListener {
 
         if (exoPlayer == null) {
             exoPlayer = ExoPlayerFactory.newSimpleInstance(
-                activity,
-                DefaultTrackSelector(), DefaultLoadControl()
+                    activity,
+                    DefaultTrackSelector(), DefaultLoadControl()
             )
         }
 
@@ -113,9 +116,9 @@ class VideoFragment : Fragment(), View.OnClickListener {
             } else {
                 releaseExo("iwNp2E1aV3Q")
                 Toast.makeText(
-                    activity,
-                    "This TV Series Has Not Trailer",
-                    Toast.LENGTH_LONG
+                        activity,
+                        "This TV Series Has Not Trailer",
+                        Toast.LENGTH_LONG
                 ).show()
             }
         })
@@ -137,8 +140,8 @@ class VideoFragment : Fragment(), View.OnClickListener {
                     val downloadUrl = ytFiles.get(iTag).url
                     val extractorsFactory = DefaultExtractorsFactory()
                     val mediaSource = ExtractorMediaSource.Factory(mediaDataSourceFactory)
-                        .setExtractorsFactory(extractorsFactory)
-                        .createMediaSource(Uri.parse(downloadUrl))
+                            .setExtractorsFactory(extractorsFactory)
+                            .createMediaSource(Uri.parse(downloadUrl))
                     exoPlayer?.prepare(mediaSource, true, false)
                     exoPlayer?.seekTo(5000)
                 }
@@ -197,8 +200,8 @@ class VideoFragment : Fragment(), View.OnClickListener {
 
     private fun buildDataSourceFactory(bandwidthMeter: DefaultBandwidthMeter?): DataSource.Factory {
         return DefaultDataSourceFactory(
-            context, bandwidthMeter,
-            buildHttpDataSourceFactory(bandwidthMeter)
+                context, bandwidthMeter,
+                buildHttpDataSourceFactory(bandwidthMeter)
         )
     }
 
@@ -209,11 +212,11 @@ class VideoFragment : Fragment(), View.OnClickListener {
     companion object {
         @JvmStatic
         fun newInstance(param1: PopularSeriesResult) =
-            VideoFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable("seriesData", param1)
+                VideoFragment().apply {
+                    arguments = Bundle().apply {
+                        putParcelable("seriesData", param1)
+                    }
                 }
-            }
     }
 
     override fun onClick(v: View?) {
@@ -225,7 +228,8 @@ class VideoFragment : Fragment(), View.OnClickListener {
 
             }
             R.id.txtGoDetail -> {
-
+                detailActivityIntent.putExtra("seriesID", param1.id)
+                startActivity(detailActivityIntent)
             }
         }
     }

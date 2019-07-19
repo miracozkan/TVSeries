@@ -1,10 +1,9 @@
 package com.miracozkan.tvseries.datalayer.repository
 
-import androidx.lifecycle.MutableLiveData
 import com.miracozkan.tvseries.BuildConfig.API_KEY
 import com.miracozkan.tvseries.datalayer.model.PopularSeriesResult
 import com.miracozkan.tvseries.datalayer.network.ProjectService
-import com.miracozkan.tvseries.viewmodel.BaseRepository
+import com.miracozkan.tvseries.utils.BaseRepository
 
 
 // Code with ❤
