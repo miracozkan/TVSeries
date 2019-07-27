@@ -16,14 +16,14 @@
         tools:background="@color/colorAccent" />
 
     <TextView
-        android:id="@+id/txtPlaterNameSurname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:textColor="@android:color/white"
-        android:textSize="12sp"
-        tools:text="Gal Gadot" />
+            android:id="@+id/txtPlayerNameSurname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            tools:text="Gal Gadot" />
 
 </LinearLayout>

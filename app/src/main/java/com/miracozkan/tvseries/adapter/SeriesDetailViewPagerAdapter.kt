@@ -3,7 +3,6 @@ package com.miracozkan.tvseries.adapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.miracozkan.tvseries.datalayer.model.SeriesSeason
 import com.miracozkan.tvseries.ui.SeriesDetailsFragment
 import com.miracozkan.tvseries.ui.SeriesEpisodeFragment
 
@@ -18,16 +17,15 @@ import com.miracozkan.tvseries.ui.SeriesEpisodeFragment
 //└─────────────────────────────┘
 
 class SeriesDetailViewPagerAdapter(
-        fm: FragmentManager,
-        private val seriesID: Int,
-        private val seriesSeason: List<SeriesSeason>
+    fm: FragmentManager,
+    private val seriesID: Int
 ) : FragmentPagerAdapter(fm) {
 
     private val seriesDetailFragment by lazy {
         SeriesDetailsFragment.newInstance(seriesID)
     }
     private val seriesEpisodeFragnent by lazy {
-        SeriesEpisodeFragment.newInstance(seriesSeason as ArrayList<SeriesSeason>)
+        SeriesEpisodeFragment.newInstance(seriesID)
     }
     private val fragmentList: ArrayList<Fragment>
     private val fragmentTitleList: ArrayList<String>

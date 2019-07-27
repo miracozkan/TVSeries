@@ -7,18 +7,15 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.miracozkan.tvseries.R
 import com.miracozkan.tvseries.adapter.TrailerPagerAdapter
-import com.miracozkan.tvseries.datalayer.model.VideoFragmentModel
 import com.miracozkan.tvseries.datalayer.network.RetrofitClient
+import com.miracozkan.tvseries.reciever.InternetConnectionReciever
 import com.miracozkan.tvseries.utils.DependencyUtil
 import com.miracozkan.tvseries.utils.ViewModelFactory
 import com.miracozkan.tvseries.viewmodel.PopularSeriesViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-
-    private var param1: Int? = null
-
-    private val seriesList by lazy { ArrayList<VideoFragmentModel>() }
+    private val internetConnectionReceiver by lazy { InternetConnectionReciever() }
 
     private val popularSeriesRepository by lazy {
         DependencyUtil.getPopularSeriesRepository(RetrofitClient.getClient())
@@ -35,22 +32,18 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
     }
 
     override fun onStart() {
         super.onStart()
+
         popularSeriesViewModel.popularSeriesList.observe(this, Observer { _seriesList ->
             (vpTrailers.adapter as TrailerPagerAdapter).setVideoList(_seriesList!!)
         })
-
         vpTrailers.apply {
             adapter = TrailerPagerAdapter(supportFragmentManager)
             offscreenPageLimit = 3
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        popularSeriesViewModel.cancelRequests()
     }
 }

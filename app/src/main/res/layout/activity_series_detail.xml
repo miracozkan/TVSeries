@@ -1,109 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/black"
-    tools:context=".ui.SeriesDetailActivity">
-
-    <ImageView
-        android:id="@+id/imgSeriesVideo"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="192dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:background="@color/colorPrimary" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/txtSeriesName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/imgSeriesPoster"
-        app:layout_constraintTop_toBottomOf="@+id/imgSeriesVideo"
-        tools:text="Hababam Sınıfı" />
+    <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-    <ImageView
-        android:id="@+id/imgSeriesPoster"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="142dp"
-        android:minWidth="108dp"
-        android:minHeight="192dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:background="@color/colorAccent" />
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:contentScrim="@color/colorPrimary"
+                app:titleEnabled="false">
 
-    <TextView
-        android:id="@+id/txtSeriesInfo"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:textColor="@android:color/white"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/txtSeriesName"
-        app:layout_constraintTop_toBottomOf="@+id/txtSeriesName"
-        tools:text="orda burda surdaorda burda surdaorda burda" />
+            <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    app:layout_collapseMode="parallax"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_android"/>
 
-    <TextView
-        android:id="@+id/txtSeriesWritter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textColor="@android:color/white"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="@+id/txtSeriesInfo"
-        app:layout_constraintTop_toBottomOf="@+id/txtSeriesInfo"
-        tools:text="Writter : Mirac OZKAN" />
+            <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:title="Mother!"/>
 
-    <TextView
-        android:id="@+id/txtStoryLine"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/story_line"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgSeriesPoster" />
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-    <TextView
-        android:id="@+id/txtStoryLineDesc"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtStoryLine"
-        tools:text="androidandroidandroidandroidandroidandroidandroidandroidandroidandroidandroidandroidandroidandroidandroidandroidandroidandroidandroid" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tblSeriesDetailTitle"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryDark"
+            android:paddingTop="32dp"
+            android:clipToPadding="false"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/vpSeriesDetail"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtStoryLineDesc" />
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp"
+                android:orientation="vertical">
 
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#ffffff"
+                    android:text="Mother!"
+                    android:textSize="22sp"
+                    android:textStyle="bold"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#ffffff"
+                    android:layout_marginTop="24dp"
+                    android:text="sadasdasdasdasdasd"
+                    android:textSize="17sp"/>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <iammert.com.view.scalinglib.ScalingLayout
+            android:id="@+id/scalingLayout"
+            android:layout_width="300dp"
+            android:layout_height="48dp"
+            app:radiusFactor="1"
+            android:clickable="true"
+            android:layout_gravity="center_horizontal"
+            android:stateListAnimator="@animator/sl_state_animator"
+            app:layout_behavior="iammert.com.view.scalinglib.ScalingLayoutBehavior"
+            android:focusable="true">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorAccent"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+            <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
+                <ImageView
+                        android:id="@+id/imageViewWatchNow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_android"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/imageViewWatchNow"
+                        android:gravity="center"
+                        android:text="Watch Now"
+                        android:layout_marginStart="8dp"
+                        android:textColor="#ffffff"
+                        android:singleLine="true"
+                        android:textSize="18sp"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
+                <ImageView
+                        android:id="@+id/imageViewWatchLater"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_android"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/imageViewWatchLater"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginBottom="0dp"
+                        android:layout_toEndOf="@+id/imageViewWatchLater"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="Remind Later"
+                        android:textColor="#ffffff"
+                        android:textSize="18sp"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </iammert.com.view.scalinglib.ScalingLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
