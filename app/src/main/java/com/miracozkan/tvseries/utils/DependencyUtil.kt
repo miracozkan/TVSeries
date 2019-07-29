@@ -1,5 +1,6 @@
 package com.miracozkan.tvseries.utils
 
+import com.miracozkan.tvseries.datalayer.localdb.ProjectDao
 import com.miracozkan.tvseries.datalayer.network.ProjectService
 import com.miracozkan.tvseries.datalayer.repository.PopularSeriesRepository
 import com.miracozkan.tvseries.datalayer.repository.SeriesDetailRepository
@@ -23,7 +24,11 @@ object DependencyUtil {
     fun getVideoRepository(projectService: ProjectService, videoID: String): VideoRepository =
         VideoRepository(projectService = projectService, videoId = videoID)
 
-    fun getSeriesDetailRepository(projectService: ProjectService, seriesID: Int): SeriesDetailRepository =
-            SeriesDetailRepository(projectService = projectService, seriesID = seriesID)
+    fun getSeriesDetailRepository(
+        projectService: ProjectService,
+        seriesID: Int,
+        projectDao: ProjectDao
+    ): SeriesDetailRepository =
+        SeriesDetailRepository(projectService = projectService, seriesID = seriesID, projectDao = projectDao)
 
 }

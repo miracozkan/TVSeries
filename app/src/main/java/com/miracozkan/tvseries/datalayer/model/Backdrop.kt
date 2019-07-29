@@ -1,5 +1,7 @@
 package com.miracozkan.tvseries.datalayer.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
@@ -13,7 +15,10 @@ import com.google.gson.annotations.SerializedName
 //│ 13/07/19 - 18:37            │
 //└─────────────────────────────┘
 
+@Entity(tableName = "backdrop_table")
 data class Backdrop(
+    @PrimaryKey(autoGenerate = true)
+    var id: Int? = null,
 
     @SerializedName("aspect_ratio")
     @Expose

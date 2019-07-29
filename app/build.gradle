@@ -72,4 +72,12 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0-alpha02'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-alpha02'
     kapt 'androidx.lifecycle:lifecycle-compiler:2.2.0-alpha02'
+
+    implementation 'androidx.room:room-runtime:2.1.0'
+    implementation 'androidx.room:room-ktx:2.1.0'
+    kapt 'androidx.room:room-compiler:2.1.0'
+
+    implementation 'com.github.iammert:ScalingLayout:1.2.1'
+    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.0.0'
+
 }

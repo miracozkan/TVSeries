@@ -1,6 +1,8 @@
 package com.miracozkan.tvseries.datalayer.model
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
@@ -15,8 +17,12 @@ import kotlinx.android.parcel.Parcelize
 //│ 15/07/19 - 00:29            │
 //└─────────────────────────────┘
 
+@Entity(tableName = "videp_fragment_model_table")
 @Parcelize
 data class VideoFragmentModel(
+
+    @PrimaryKey(autoGenerate = true)
+    var sid: Int? = null,
 
     @SerializedName("original_name")
     @Expose

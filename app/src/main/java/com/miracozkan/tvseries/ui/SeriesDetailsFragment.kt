@@ -1,6 +1,7 @@
 package com.miracozkan.tvseries.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +10,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.miracozkan.tvseries.R
+import com.miracozkan.tvseries.adapter.SeriesCastAdapter
 import com.miracozkan.tvseries.adapter.SeriesReviewAdapter
+import com.miracozkan.tvseries.datalayer.localdb.ProjectDatabase
 import com.miracozkan.tvseries.datalayer.network.RetrofitClient
 import com.miracozkan.tvseries.utils.DependencyUtil
 import com.miracozkan.tvseries.utils.ViewModelFactory
@@ -21,12 +24,16 @@ private const val ARG_PARAM1 = "param1"
 class SeriesDetailsFragment : Fragment() {
 
     private val seriesDetailRepository by lazy {
-        DependencyUtil.getSeriesDetailRepository(RetrofitClient.getClient(), seriesID = param1!!)
+        DependencyUtil.getSeriesDetailRepository(
+            RetrofitClient.getClient(),
+            seriesID = param1!!,
+            projectDao = ProjectDatabase.getInstance(context!!).projectDao()
+        )
     }
     private val seriesDetailViewModel by lazy {
         ViewModelProviders.of(
-                this,
-                ViewModelFactory(seriesDetailRepository)
+            this,
+            ViewModelFactory(seriesDetailRepository)
         ).get(SeriesDetailViewModel::class.java)
     }
 
@@ -40,16 +47,24 @@ class SeriesDetailsFragment : Fragment() {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
+        Log.e("SeriesID", param1.toString())
         return inflater.inflate(R.layout.fragment_series_details, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        seriesDetailViewModel.seriesDetail.observe(this, Observer { _seriesDetail ->
 
+        with(recycCast) {
+            adapter = SeriesCastAdapter()
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        }
+
+        seriesDetailViewModel.seriesDetail.observe(this, Observer { _seriesDetail ->
+            Log.e("Cast List", _seriesDetail.createdBy?.size.toString())
+            (recycCast.adapter as SeriesCastAdapter).setNewItem(_seriesDetail.createdBy!!)
         })
 
         with(recycReviews) {
@@ -59,16 +74,18 @@ class SeriesDetailsFragment : Fragment() {
 
         seriesDetailViewModel.seriesReviews.observe(this, Observer { _reviews ->
             (recycReviews.adapter as SeriesReviewAdapter).setNewItem(_reviews!!)
+            Log.e("SeriesReviewsSize", _reviews.size.toString())
         })
+
     }
 
     companion object {
         @JvmStatic
         fun newInstance(param1: Int) =
-                SeriesDetailsFragment().apply {
-                    arguments = Bundle().apply {
-                        putInt(ARG_PARAM1, param1)
-                    }
+            SeriesDetailsFragment().apply {
+                arguments = Bundle().apply {
+                    putInt(ARG_PARAM1, param1)
                 }
+            }
     }
 }

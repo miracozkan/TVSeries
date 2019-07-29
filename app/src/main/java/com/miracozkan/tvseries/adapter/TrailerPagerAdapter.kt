@@ -1,14 +1,9 @@
 package com.miracozkan.tvseries.adapter
 
-import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import androidx.viewpager.widget.ViewPager
 import com.miracozkan.tvseries.datalayer.model.PopularSeriesResult
-import com.miracozkan.tvseries.datalayer.model.Poster
-import com.miracozkan.tvseries.datalayer.model.VideoFragmentModel
-import com.miracozkan.tvseries.datalayer.model.VideoResult
 import com.miracozkan.tvseries.ui.VideoFragment
 
 

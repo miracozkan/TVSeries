@@ -1,6 +1,5 @@
 package com.miracozkan.tvseries.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.miracozkan.tvseries.datalayer.model.PopularSeriesResult

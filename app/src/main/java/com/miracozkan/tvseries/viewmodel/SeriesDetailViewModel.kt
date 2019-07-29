@@ -5,7 +5,10 @@ import androidx.lifecycle.ViewModel
 import com.miracozkan.tvseries.datalayer.model.SeriesReviews
 import com.miracozkan.tvseries.datalayer.network.response.GetSeriesDetail
 import com.miracozkan.tvseries.datalayer.repository.SeriesDetailRepository
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 
@@ -43,7 +46,5 @@ class SeriesDetailViewModel(private val seriesDetailRepository: SeriesDetailRepo
             seriesDetail.postValue(seriesDetailRepository.getSeriesDetail())
         }
     }
-
-    fun cancelRequests() = coroutineContext.cancel()
 
 }

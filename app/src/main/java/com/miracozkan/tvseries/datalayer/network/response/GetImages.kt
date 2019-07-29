@@ -1,9 +1,11 @@
 package com.miracozkan.tvseries.datalayer.network.response
 
-import com.miracozkan.tvseries.datalayer.model.Poster
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.miracozkan.tvseries.datalayer.model.Backdrop
+import com.miracozkan.tvseries.datalayer.model.Poster
 
 
 // Code with ❤
@@ -15,7 +17,11 @@ import com.miracozkan.tvseries.datalayer.model.Backdrop
 //│ 13/07/19 - 18:37            │
 //└─────────────────────────────┘
 
+@Entity(tableName = "get_images_table")
 data class GetImages(
+
+    @PrimaryKey(autoGenerate = true)
+    var sid: Int? = null,
 
     @SerializedName("backdrops")
     @Expose

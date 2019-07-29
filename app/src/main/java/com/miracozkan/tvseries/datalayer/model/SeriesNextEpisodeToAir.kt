@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
+import kotlinx.android.parcel.RawValue
 
 
 // Code with ❤
@@ -14,37 +15,48 @@ import kotlinx.android.parcel.Parcelize
 //│ ─────────────────────────── │
 //│ mirac.ozkan123@gmail.com    │            
 //│ ─────────────────────────── │
-//│ 13/07/19 - 18:19            │
+//│ 23/07/19 - 12:24            │
 //└─────────────────────────────┘
 
-@Entity(tableName = "video_result_table")
+@Entity(tableName = "series_next_episode_air")
 @Parcelize
-data class VideoResult(
+data class SeriesNextEpisodeToAir(
+
     @PrimaryKey(autoGenerate = true)
     var sid: Int? = null,
 
+    @SerializedName("air_date")
+    @Expose
+    var airDate: String? = null,
+    @SerializedName("episode_number")
+    @Expose
+    var episodeNumber: Int? = null,
     @SerializedName("id")
     @Expose
-    var id: String? = null,
-    @SerializedName("iso_639_1")
-    @Expose
-    var iso6391: String? = null,
-    @SerializedName("iso_3166_1")
-    @Expose
-    var iso31661: String? = null,
-    @SerializedName("key")
-    @Expose
-    var key: String? = null,
+    var id: Int? = null,
     @SerializedName("name")
     @Expose
     var name: String? = null,
-    @SerializedName("site")
+    @SerializedName("overview")
     @Expose
-    var site: String? = null,
-    @SerializedName("size")
+    var overview: String? = null,
+    @SerializedName("production_code")
     @Expose
-    var size: Int? = null,
-    @SerializedName("type")
+    var productionCode: String? = null,
+    @SerializedName("season_number")
     @Expose
-    var type: String? = null
+    var seasonNumber: Int? = null,
+    @SerializedName("show_id")
+    @Expose
+    var showId: Int? = null,
+    @SerializedName("still_path")
+    @Expose
+    var stillPath: @RawValue Any? = null,
+    @SerializedName("vote_average")
+    @Expose
+    var voteAverage: Int? = null,
+    @SerializedName("vote_count")
+    @Expose
+    var voteCount: Int? = null
+
 ) : Parcelable

@@ -1,6 +1,8 @@
 package com.miracozkan.tvseries.datalayer.model
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
@@ -15,8 +17,12 @@ import kotlinx.android.parcel.Parcelize
 //│ 13/07/19 - 16:37            │
 //└─────────────────────────────┘
 
+@Entity(tableName = "popular_series_result_table")
 @Parcelize
 data class PopularSeriesResult(
+    @PrimaryKey(autoGenerate = true)
+    var sid: Int? = null,
+
     @SerializedName("original_name")
     @Expose
     var originalName: String? = null,
@@ -56,4 +62,4 @@ data class PopularSeriesResult(
     @SerializedName("poster_path")
     @Expose
     var posterPath: String? = null
-):Parcelable
+) : Parcelable
