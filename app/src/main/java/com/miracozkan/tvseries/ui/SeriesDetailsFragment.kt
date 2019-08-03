@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.miracozkan.tvseries.R
 import com.miracozkan.tvseries.adapter.SeriesCastAdapter
 import com.miracozkan.tvseries.adapter.SeriesReviewAdapter
-import com.miracozkan.tvseries.datalayer.localdb.ProjectDatabase
 import com.miracozkan.tvseries.datalayer.network.RetrofitClient
 import com.miracozkan.tvseries.utils.DependencyUtil
 import com.miracozkan.tvseries.utils.ViewModelFactory
@@ -25,15 +24,14 @@ class SeriesDetailsFragment : Fragment() {
 
     private val seriesDetailRepository by lazy {
         DependencyUtil.getSeriesDetailRepository(
-            RetrofitClient.getClient(),
-            seriesID = param1!!,
-            projectDao = ProjectDatabase.getInstance(context!!).projectDao()
+                RetrofitClient.getClient(),
+                seriesID = param1!!
         )
     }
     private val seriesDetailViewModel by lazy {
         ViewModelProviders.of(
-            this,
-            ViewModelFactory(seriesDetailRepository)
+                this,
+                ViewModelFactory(seriesDetailRepository)
         ).get(SeriesDetailViewModel::class.java)
     }
 
@@ -47,8 +45,8 @@ class SeriesDetailsFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         Log.e("SeriesID", param1.toString())
         return inflater.inflate(R.layout.fragment_series_details, container, false)
@@ -82,10 +80,10 @@ class SeriesDetailsFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance(param1: Int) =
-            SeriesDetailsFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_PARAM1, param1)
+                SeriesDetailsFragment().apply {
+                    arguments = Bundle().apply {
+                        putInt(ARG_PARAM1, param1)
+                    }
                 }
-            }
     }
 }

@@ -24,8 +24,7 @@ import com.miracozkan.tvseries.datalayer.network.response.*
         SeriesProductCompany::class, SeriesReviews::class, SeriesSeason::class, VideoFragmentModel::class,
         VideoResult::class, GetSeriesReviews::class, GetImages::class, GetVideo::class,
         GetPopular::class, SeriesNextEpisodeToAir::class],
-    version = 1,
-    exportSchema = false
+        version = 3
 )
 @TypeConverters(TypeConverter::class)
 abstract class ProjectDatabase : RoomDatabase() {

@@ -5,7 +5,10 @@ import androidx.lifecycle.ViewModel
 import com.miracozkan.tvseries.datalayer.model.Poster
 import com.miracozkan.tvseries.datalayer.model.VideoResult
 import com.miracozkan.tvseries.datalayer.repository.VideoRepository
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 
@@ -41,7 +44,4 @@ class VideoViewModel(private val videoRepository: VideoRepository) : ViewModel()
             seriesImage.postValue(videoRepository.getSeriesImages())
         }
     }
-
-    fun cancelRequests() = coroutineContext.cancel()
-
 }

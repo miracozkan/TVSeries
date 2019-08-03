@@ -22,16 +22,16 @@ data class SeriesReviews(
     var sid: Int? = null,
 
     @SerializedName("author")
-        @Expose
-        var author: String? = null,
+    @Expose
+    var author: String? = null,
     @SerializedName("content")
-        @Expose
-        var content: String? = null,
+    @Expose
+    var content: String? = null,
     @SerializedName("id")
-        @Expose
-        var id: String? = null,
+    @Expose
+    var id: String? = null,
     @SerializedName("url")
-        @Expose
-        var url: String? = null
+    @Expose
+    var url: String? = null
 
 )

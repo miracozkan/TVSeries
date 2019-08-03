@@ -23,19 +23,19 @@ data class GetSeriesReviews(
     var sid: Int? = null,
 
     @SerializedName("id")
-        @Expose
-        var id: Int? = null,
+    @Expose
+    var id: Int? = null,
     @SerializedName("page")
-        @Expose
-        var page: Int? = null,
+    @Expose
+    var page: Int? = null,
     @SerializedName("results")
-        @Expose
-        var results: List<SeriesReviews>? = null,
+    @Expose
+    var results: List<SeriesReviews>? = null,
     @SerializedName("total_pages")
-        @Expose
-        var totalPages: Int? = null,
+    @Expose
+    var totalPages: Int? = null,
     @SerializedName("total_results")
-        @Expose
-        var totalResults: Int? = null
+    @Expose
+    var totalResults: Int? = null
 
 )

@@ -46,5 +46,4 @@ class SeriesDetailViewModel(private val seriesDetailRepository: SeriesDetailRepo
             seriesDetail.postValue(seriesDetailRepository.getSeriesDetail())
         }
     }
-
 }

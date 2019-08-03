@@ -1,6 +1,7 @@
 package com.miracozkan.tvseries.datalayer.network.response
 
 import android.os.Parcelable
+import androidx.annotation.NonNull
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
@@ -23,6 +24,7 @@ import kotlinx.android.parcel.Parcelize
 data class GetSeriesDetail(
 
     @PrimaryKey(autoGenerate = true)
+    @NonNull
     var sid: Int? = null,
 
     @SerializedName("backdrop_path")

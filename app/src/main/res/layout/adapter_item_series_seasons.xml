@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorAccent">
+    android:background="@color/cardview_shadow_end_color">
 
     <ImageView
         android:id="@+id/imgSeriesSeaonsPoster"

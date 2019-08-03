@@ -41,11 +41,9 @@ import kotlinx.android.synthetic.main.layout_video.*
 class VideoFragment : Fragment(), View.OnClickListener {
 
     private val detailActivityIntent by lazy { Intent(activity, SeriesDetailActivity::class.java) }
-
     private lateinit var param1: PopularSeriesResult
-
-    var exoPlayer: SimpleExoPlayer? = null
-    lateinit var mediaDataSourceFactory: DataSource.Factory
+    private var exoPlayer: SimpleExoPlayer? = null
+    private lateinit var mediaDataSourceFactory: DataSource.Factory
     private lateinit var bandwidthMeter: DefaultBandwidthMeter
 
     private val videoRepository by lazy {
@@ -76,7 +74,9 @@ class VideoFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        /**
+         * Set UI component text
+         */
         txtTitle.text = param1.originalName
         txtLike.text = param1.voteCount.toString()
         txtDislike.text = param1.voteAverage.toString()

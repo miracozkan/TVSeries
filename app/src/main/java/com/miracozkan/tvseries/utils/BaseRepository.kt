@@ -35,8 +35,7 @@ abstract class BaseRepository {
         return if (response.isSuccessful)
             Output.Success(response.body()!!)
         else {
-            Output.Error(IOException("OOps .. Something went wrong due to  ${response.message()} and ${response.errorBody()}"))
+            Output.Error(IOException("OOps .. Something went wrong due to  ${response.message()} and ${response.errorBody()} and ${response.code()}"))
         }
-
     }
 }

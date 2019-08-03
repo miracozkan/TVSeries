@@ -97,25 +97,44 @@ object TypeConverter {
         return Gson().fromJson(value, listType)
     }
 
+//    @TypeConverter
+//    @JvmStatic
+//    fun intToString(array: List<Int>): String {
+//        if (array.isEmpty()) {
+//            return ""
+//        }
+//        val builder = StringBuilder(array[0].toString())
+//        for (i in 1 until array.size) {
+//            builder.append(",").append(array[i])
+//        }
+//        return builder.toString()
+//    }
+//
+//    @TypeConverter
+//    @JvmStatic
+//    fun intFromString(value: String): List<Int> {
+//        val listType = object : TypeToken<List<Int>>() {}.type
+//        return Gson().fromJson(value, listType)
+//    }
+
+
     @TypeConverter
     @JvmStatic
-    fun intToString(array: List<Int>): String {
-        if (array.isEmpty()) {
-            return ""
+    fun stringToIntList(data: String?): List<Int>? {
+        return data?.let { _it ->
+            _it.split(",").map { __it ->
+                __it.toInt()
+
+            }
         }
-        val builder = StringBuilder(array[0].toString())
-        for (i in 1 until array.size) {
-            builder.append(",").append(array[i])
-        }
-        return builder.toString()
     }
 
     @TypeConverter
     @JvmStatic
-    fun intFromString(value: String): List<Int> {
-        val listType = object : TypeToken<List<Int>>() {}.type
-        return Gson().fromJson(value, listType)
+    fun intListToString(ints: List<Int>?): String? {
+        return ints?.joinToString(",")
     }
+
 
     @TypeConverter
     @JvmStatic
@@ -136,25 +155,43 @@ object TypeConverter {
         val listType = object : TypeToken<List<SeriesGenre>>() {}.type
         return Gson().fromJson(value, listType)
     }
+//
+//    @TypeConverter
+//    @JvmStatic
+//    fun stringToString(array: List<String>): String {
+//        if (array.isEmpty()) {
+//            return ""
+//        }
+//        val builder = StringBuilder(array[0].toString())
+//        for (i in 1 until array.size) {
+//            builder.append(",").append(array[i])
+//        }
+//        return builder.toString()
+//    }
+//
+//    @TypeConverter
+//    @JvmStatic
+//    fun stringFromString(value: String): List<String> {
+//        val listType = object : TypeToken<List<String>>() {}.type
+//        return Gson().fromJson(value, listType)
+//    }
+
 
     @TypeConverter
     @JvmStatic
-    fun stringToString(array: List<String>): String {
-        if (array.isEmpty()) {
-            return ""
+    fun stringToStringList(data: String?): List<String>? {
+        return data?.let { _it ->
+            _it.split(",").map { __it ->
+                __it
+
+            }
         }
-        val builder = StringBuilder(array[0].toString())
-        for (i in 1 until array.size) {
-            builder.append(",").append(array[i])
-        }
-        return builder.toString()
     }
 
     @TypeConverter
     @JvmStatic
-    fun stringFromString(value: String): List<String> {
-        val listType = object : TypeToken<List<String>>() {}.type
-        return Gson().fromJson(value, listType)
+    fun StringListToString(ints: List<String>?): String? {
+        return ints?.joinToString(",")
     }
 
     @TypeConverter
@@ -318,7 +355,7 @@ object TypeConverter {
 
     @TypeConverter
     @JvmStatic
-    fun stringToSeriesNextEpisodeToAir(value: String): SeriesNextEpisodeToAir {
+    fun stringToSeriesNextEpisodeToAir(value: String?): SeriesNextEpisodeToAir {
         return if (value == "") {
             SeriesNextEpisodeToAir()
         } else {
@@ -329,9 +366,28 @@ object TypeConverter {
 
     @TypeConverter
     @JvmStatic
-    fun seriesNextEpisodeToAirToString(any: SeriesNextEpisodeToAir): String {
+    fun seriesNextEpisodeToAirToString(any: SeriesNextEpisodeToAir?): String {
         return run {
             Gson().toJson(any)
+        }
+    }
+
+    @TypeConverter
+    @JvmStatic
+    fun stringToPopularSeriesResult(value: String): PopularSeriesResult {
+        return if (value == "") {
+            PopularSeriesResult()
+        } else {
+            val listType = object : TypeToken<PopularSeriesResult>() {}.type
+            Gson().fromJson(value, listType)
+        }
+    }
+
+    @TypeConverter
+    @JvmStatic
+    fun popularSeriesResultToString(value: PopularSeriesResult): String {
+        return run {
+            Gson().toJson(value)
         }
     }
 

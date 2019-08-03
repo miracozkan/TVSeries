@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.miracozkan.tvseries.R
 import com.miracozkan.tvseries.adapter.SeriesSeasonsAdapter
-import com.miracozkan.tvseries.datalayer.localdb.ProjectDatabase
 import com.miracozkan.tvseries.datalayer.network.RetrofitClient
 import com.miracozkan.tvseries.utils.DependencyUtil
 import com.miracozkan.tvseries.utils.ViewModelFactory
@@ -25,8 +24,7 @@ class SeriesEpisodeFragment : Fragment() {
 
     private val seriesDetailRepository by lazy {
         DependencyUtil.getSeriesDetailRepository(
-            RetrofitClient.getClient(), seriesID = param1!!,
-            projectDao = ProjectDatabase.getInstance(context!!).projectDao()
+                RetrofitClient.getClient(), seriesID = param1!!
         )
     }
     private val seriesDetailViewModel by lazy {

@@ -15,7 +15,8 @@ import com.miracozkan.tvseries.utils.BaseRepository
 //│ 13/07/19 - 16:48            │
 //└─────────────────────────────┘
 
-class PopularSeriesRepository(private val projectService: ProjectService) : BaseRepository() {
+class PopularSeriesRepository(private val projectService: ProjectService) :
+        BaseRepository() {
 
     suspend fun getPopularSeries(): MutableList<PopularSeriesResult>? {
         return safeApiCall(

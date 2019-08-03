@@ -4,6 +4,7 @@ import com.miracozkan.tvseries.datalayer.network.response.*
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Headers
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -36,6 +37,7 @@ interface ProjectService {
         @Query("api_key") apiKey: String
     ): Deferred<Response<GetImages>>
 
+    @Headers("Access-Control-Expose-Headers: Retry-After")
     @GET("tv/{seriesID}/reviews")
     fun getSeriesReviewsAsync(
             @Path("seriesID") seriesID: Int,

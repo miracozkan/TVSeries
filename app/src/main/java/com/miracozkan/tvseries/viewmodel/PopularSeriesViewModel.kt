@@ -4,7 +4,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.miracozkan.tvseries.datalayer.model.PopularSeriesResult
 import com.miracozkan.tvseries.datalayer.repository.PopularSeriesRepository
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 
@@ -34,7 +37,4 @@ class PopularSeriesViewModel(private val popularSeriesRepository: PopularSeriesR
             popularSeriesList.postValue(popularSeriesRepository.getPopularSeries())
         }
     }
-
-    fun cancelRequests() = coroutineContext.cancel()
-
 }

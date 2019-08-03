@@ -1,7 +1,6 @@
 package com.miracozkan.tvseries.datalayer.repository
 
 import com.miracozkan.tvseries.BuildConfig
-import com.miracozkan.tvseries.datalayer.localdb.ProjectDao
 import com.miracozkan.tvseries.datalayer.model.SeriesReviews
 import com.miracozkan.tvseries.datalayer.network.ProjectService
 import com.miracozkan.tvseries.datalayer.network.response.GetSeriesDetail
@@ -18,9 +17,8 @@ import com.miracozkan.tvseries.utils.BaseRepository
 //└─────────────────────────────┘
 
 class SeriesDetailRepository(
-    private val projectService: ProjectService,
-    private val seriesID: Int,
-    private val projectDao: ProjectDao
+        private val projectService: ProjectService,
+        private val seriesID: Int
 ) : BaseRepository() {
 
     suspend fun getSeriesReview(): MutableList<SeriesReviews> {
@@ -36,13 +34,4 @@ class SeriesDetailRepository(
             error = "Error fetching news"
         )!!
     }
-
-    suspend fun insert(getSeriesDetail: GetSeriesDetail) {
-        projectDao.insertSeriesDetail(getSeriesDetail)
-    }
-
-    suspend fun getAllData(): GetSeriesDetail {
-        return projectDao.getSeriesDetail(seriesID)
-    }
-
 }
