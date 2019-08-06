@@ -52,7 +52,7 @@ class VideoFragment : Fragment(), View.OnClickListener {
     private val videoViewModel by lazy {
         ViewModelProviders.of(
                 this,
-            ViewModelFactory(videoRepository)
+                ViewModelFactory(videoRepository)
         ).get(VideoViewModel::class.java)
     }
 
@@ -74,6 +74,7 @@ class VideoFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         /**
          * Set UI component text
          */
@@ -112,7 +113,7 @@ class VideoFragment : Fragment(), View.OnClickListener {
 
         videoViewModel.seriesVideo.observe(this, Observer { _videoList ->
             if (!_videoList.isNullOrEmpty()) {
-                releaseExo(_videoList[0].key!!)
+                releaseExo(_videoList.last().key!!)
             } else {
                 releaseExo("iwNp2E1aV3Q")
                 Toast.makeText(
@@ -126,6 +127,9 @@ class VideoFragment : Fragment(), View.OnClickListener {
         videoViewModel.seriesImage.observe(this, Observer { _posterList ->
             if (!_posterList.isNullOrEmpty()) {
                 (recycImages.adapter as VideoPosterAdapter).setNewItem(_posterList)
+
+                shimmer_view_container.stopShimmerAnimation()
+                shimmer_view_container.visibility = View.GONE
             }
         })
     }
@@ -164,25 +168,51 @@ class VideoFragment : Fragment(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
+        shimmer_view_container.startShimmerAnimation()
         if (userVisibleHint)
             startPlayer()
+        Log.e("onResume", "Video")
     }
 
     override fun onStop() {
         super.onStop()
         if (Util.SDK_INT > 23) {
             releasePlayer()
+            Log.e("onStop", "Video")
         }
     }
 
     override fun onPause() {
         super.onPause()
+        shimmer_view_container.stopShimmerAnimation()
         pausePlayer()
+        Log.e("onPause", "Video")
     }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.e("onDestroyView", "Video")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.e("onDestroy", "Video")
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Log.e("onDetach", "Video")
+    }
+
+    /**
+     *
+     */
 
     private fun releasePlayer() {
         exoPlayer?.release()
     }
+
 
     private fun pausePlayer() {
         exoPlayer?.playWhenReady = false
@@ -193,6 +223,10 @@ class VideoFragment : Fragment(), View.OnClickListener {
         exoPlayer?.playWhenReady = true
         exoPlayer?.playbackState
     }
+
+    /**
+     *
+     */
 
     private fun buildDataSourceFactory(useBandwidthMeter: Boolean): DataSource.Factory {
         return buildDataSourceFactory(if (useBandwidthMeter) bandwidthMeter else null)
