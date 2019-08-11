@@ -30,8 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:title="Miraç Ozkan!" />
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -214,5 +213,13 @@
         </LinearLayout>
 
     </iammert.com.view.scalinglib.ScalingLayout>
+
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:id="@+id/pb"
+        style="@style/SpinKitView.Large.Wave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:SpinKit_Color="@color/colorAccent" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

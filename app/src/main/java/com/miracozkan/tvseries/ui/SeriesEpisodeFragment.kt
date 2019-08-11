@@ -1,5 +1,6 @@
 package com.miracozkan.tvseries.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -29,8 +30,8 @@ class SeriesEpisodeFragment : Fragment() {
     }
     private val seriesDetailViewModel by lazy {
         ViewModelProviders.of(
-            activity!!,
-            ViewModelFactory(seriesDetailRepository)
+                activity!!,
+                ViewModelFactory(seriesDetailRepository)
         ).get(SeriesDetailViewModel::class.java)
     }
 
@@ -42,12 +43,13 @@ class SeriesEpisodeFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_series_episode, container, false)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -58,18 +60,24 @@ class SeriesEpisodeFragment : Fragment() {
         }
 
         seriesDetailViewModel.seriesDetail.observe(this, Observer { _it ->
-            Log.e("SeriesSeasonsSize", _it.seasons?.size.toString())
-            (recycSeasons.adapter as SeriesSeasonsAdapter).setNewItem(_it.seasons!!)
+            if (!(_it.seasons).isNullOrEmpty()) {
+
+                (recycSeasons.adapter as SeriesSeasonsAdapter).setNewItem(_it.seasons!!)
+            } else {
+                txtNoSeason.text = "There is no season"
+                recycSeasons.visibility = View.GONE
+                txtNoSeason.visibility = View.VISIBLE
+            }
         })
     }
 
     companion object {
         @JvmStatic
         fun newInstance(param1: Int) =
-            SeriesEpisodeFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(seriesID, param1)
+                SeriesEpisodeFragment().apply {
+                    arguments = Bundle().apply {
+                        putInt(seriesID, param1)
+                    }
                 }
-            }
     }
 }

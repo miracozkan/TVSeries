@@ -20,10 +20,11 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
     <string name="story_line">Story Line</string>
-    <string name="cast">Cast</string>
+    <string name="directors">Directors</string>
     <string name="user_reviews">User Reviews</string>
     <string name="web_sitesi">Web Sitesi</string>
     <string name="listeye_ekle">Listeye Ekle</string>
     <string name="tur">Tür</string>
     <string name="dizi_erik">Dizi İçerik</string>
+    <string name="download_poster">Download Poster</string>
 </resources>

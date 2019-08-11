@@ -15,10 +15,11 @@ import com.miracozkan.tvseries.datalayer.model.Poster
 //└─────────────────────────────┘
 
 class VideoPosterAdapter(
-    private var imageList: List<Poster>? = null
+        private var imageList: List<Poster>? = null,
+        private val onItemClickListener: (Poster) -> Unit
 ) : RecyclerView.Adapter<VideoPosterViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoPosterViewHolder =
-        VideoPosterViewHolder(parent)
+            VideoPosterViewHolder(parent)
 
     override fun getItemCount(): Int {
         imageList?.let {
@@ -28,7 +29,7 @@ class VideoPosterAdapter(
     }
 
     override fun onBindViewHolder(holder: VideoPosterViewHolder, position: Int) {
-        holder.bind(imageList!![position])
+        holder.bind(imageList!![position], onItemClickListener)
     }
 
     fun setNewItem(imageList: List<Poster>) {

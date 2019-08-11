@@ -61,8 +61,12 @@ class SeriesDetailsFragment : Fragment() {
         }
 
         seriesDetailViewModel.seriesDetail.observe(this, Observer { _seriesDetail ->
-            Log.e("Cast List", _seriesDetail.createdBy?.size.toString())
-            (recycCast.adapter as SeriesCastAdapter).setNewItem(_seriesDetail.createdBy!!)
+            if (!(_seriesDetail.createdBy).isNullOrEmpty()) {
+                (recycCast.adapter as SeriesCastAdapter).setNewItem(_seriesDetail.createdBy!!)
+            } else {
+                txtSeriesDetailCast.append(" -> There is no cast ")
+                recycCast.visibility = View.GONE
+            }
         })
 
         with(recycReviews) {
@@ -71,8 +75,12 @@ class SeriesDetailsFragment : Fragment() {
         }
 
         seriesDetailViewModel.seriesReviews.observe(this, Observer { _reviews ->
-            (recycReviews.adapter as SeriesReviewAdapter).setNewItem(_reviews!!)
-            Log.e("SeriesReviewsSize", _reviews.size.toString())
+            if (!_reviews.isNullOrEmpty()) {
+                (recycReviews.adapter as SeriesReviewAdapter).setNewItem(_reviews)
+            } else {
+                txtUserReviews.append(" -> There is no comment")
+                recycReviews.visibility = View.GONE
+            }
         })
 
     }

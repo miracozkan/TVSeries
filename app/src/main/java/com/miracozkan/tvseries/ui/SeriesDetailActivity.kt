@@ -3,7 +3,9 @@ package com.miracozkan.tvseries.ui
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.miracozkan.tvseries.adapter.SeriesDetailViewPagerAdapter
@@ -40,6 +42,13 @@ class SeriesDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(com.miracozkan.tvseries.R.layout.activity_series_detail)
 
+        setSupportActionBar(toolbar as Toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = ""
+        scrollView.visibility = View.INVISIBLE
+        appBarLayout.visibility = View.INVISIBLE
+        scalingLayout.visibility = View.INVISIBLE
+
         with(vpSeriesDetail) {
             adapter = SeriesDetailViewPagerAdapter(supportFragmentManager, seriesID)
             tblSeriesDetailTitle.setupWithViewPager(this)
@@ -52,13 +61,14 @@ class SeriesDetailActivity : AppCompatActivity() {
             _seriesDetail.createdBy?.forEach { _it ->
                 txtSeriesWritter.append(_it.name + " - ")
             }
-//            txtSeriesInfo.text = seriesGenres
             txtSeriesName.text = _seriesDetail.name
-//            txtSeriesWritter.text = seriesWritters
             txtStoryLineDesc.text = _seriesDetail.overview
             Picasso.get().load("https://image.tmdb.org/t/p/w500" + _seriesDetail.backdropPath).into(imgSeriesVideo)
+            appBarLayout.visibility = View.VISIBLE
+            scalingLayout.visibility = View.VISIBLE
+            pb.visibility = View.GONE
+            scrollView.visibility = View.VISIBLE
         })
-
     }
 
     override fun onResume() {

@@ -19,14 +19,18 @@ import com.squareup.picasso.Picasso
 //└─────────────────────────────┘
 
 class VideoPosterViewHolder(private val parent: ViewGroup) : RecyclerView.ViewHolder(
-    LayoutInflater.from(parent.context).inflate(R.layout.adapter_item_small_trailer, parent, false)
+        LayoutInflater.from(parent.context).inflate(R.layout.adapter_item_small_trailer, parent, false)
 ) {
 
-    fun bind(model: Poster) {
+    fun bind(model: Poster, onItemClickListener: (Poster) -> Unit) {
         Picasso.get()
-            .load("https://image.tmdb.org/t/p/w200" + model.filePath)
-            .resize(108, 192)
-            .centerCrop()
-            .into(itemView.findViewById<AppCompatImageView>(R.id.imgThumbnail))
+                .load("https://image.tmdb.org/t/p/w200" + model.filePath)
+                .resize(108, 192)
+                .centerCrop()
+                .into(itemView.findViewById<AppCompatImageView>(R.id.imgThumbnail))
+
+        itemView.setOnClickListener {
+            onItemClickListener(model)
+        }
     }
 }

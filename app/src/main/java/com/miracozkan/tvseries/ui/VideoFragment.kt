@@ -1,7 +1,10 @@
 package com.miracozkan.tvseries.ui
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +12,7 @@ import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -34,6 +38,7 @@ import com.miracozkan.tvseries.datalayer.network.RetrofitClient
 import com.miracozkan.tvseries.utils.DependencyUtil
 import com.miracozkan.tvseries.utils.ViewModelFactory
 import com.miracozkan.tvseries.viewmodel.VideoViewModel
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_video.*
 import kotlinx.android.synthetic.main.layout_video.*
 
@@ -74,7 +79,7 @@ class VideoFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        val transaction = fragmentManager?.beginTransaction()
         /**
          * Set UI component text
          */
@@ -103,7 +108,26 @@ class VideoFragment : Fragment(), View.OnClickListener {
         }
 
         with(recycImages) {
-            adapter = VideoPosterAdapter()
+            adapter = VideoPosterAdapter { _poster ->
+
+                val myDialog = Dialog(activity!!).apply {
+                    setContentView(R.layout.dialog_poster_detail)
+                    window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                }
+
+                val poster = myDialog.findViewById<ImageView>(R.id.imgPosterDetail)
+
+                Picasso
+                        .get()
+                        .load("https://image.tmdb.org/t/p/w500" + _poster.filePath)
+                        .resize(216, 384)
+                        .into(poster)
+                poster.setOnClickListener {
+                    Toast.makeText(context, _poster.filePath, Toast.LENGTH_SHORT).show()
+                }
+                myDialog.show()
+
+            }
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
 
@@ -127,7 +151,6 @@ class VideoFragment : Fragment(), View.OnClickListener {
         videoViewModel.seriesImage.observe(this, Observer { _posterList ->
             if (!_posterList.isNullOrEmpty()) {
                 (recycImages.adapter as VideoPosterAdapter).setNewItem(_posterList)
-
                 shimmer_view_container.stopShimmerAnimation()
                 shimmer_view_container.visibility = View.GONE
             }
@@ -171,14 +194,12 @@ class VideoFragment : Fragment(), View.OnClickListener {
         shimmer_view_container.startShimmerAnimation()
         if (userVisibleHint)
             startPlayer()
-        Log.e("onResume", "Video")
     }
 
     override fun onStop() {
         super.onStop()
         if (Util.SDK_INT > 23) {
             releasePlayer()
-            Log.e("onStop", "Video")
         }
     }
 
@@ -186,23 +207,6 @@ class VideoFragment : Fragment(), View.OnClickListener {
         super.onPause()
         shimmer_view_container.stopShimmerAnimation()
         pausePlayer()
-        Log.e("onPause", "Video")
-    }
-
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.e("onDestroyView", "Video")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.e("onDestroy", "Video")
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        Log.e("onDetach", "Video")
     }
 
     /**
