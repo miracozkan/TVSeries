@@ -7,7 +7,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
@@ -72,14 +71,12 @@ class VideoFragment : Fragment(), View.OnClickListener {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        Log.e("VideoID", param1.id.toString())
         return inflater.inflate(R.layout.fragment_video, container, false)
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val transaction = fragmentManager?.beginTransaction()
         /**
          * Set UI component text
          */
@@ -108,15 +105,13 @@ class VideoFragment : Fragment(), View.OnClickListener {
         }
 
         with(recycImages) {
-            adapter = VideoPosterAdapter { _poster ->
 
+            adapter = VideoPosterAdapter { _poster ->
                 val myDialog = Dialog(activity!!).apply {
                     setContentView(R.layout.dialog_poster_detail)
                     window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 }
-
                 val poster = myDialog.findViewById<ImageView>(R.id.imgPosterDetail)
-
                 Picasso
                         .get()
                         .load("https://image.tmdb.org/t/p/w500" + _poster.filePath)
@@ -126,8 +121,8 @@ class VideoFragment : Fragment(), View.OnClickListener {
                     Toast.makeText(context, _poster.filePath, Toast.LENGTH_SHORT).show()
                 }
                 myDialog.show()
-
             }
+
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
 
@@ -172,6 +167,7 @@ class VideoFragment : Fragment(), View.OnClickListener {
                     exoPlayer?.prepare(mediaSource, true, false)
                     exoPlayer?.seekTo(5000)
                 }
+                barProg.visibility = View.GONE
             }
         }.extract("http://youtube.com/watch?v=$url", true, true)
     }
