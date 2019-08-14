@@ -2,7 +2,6 @@ package com.miracozkan.tvseries.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,7 +52,6 @@ class SeriesEpisodeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.e("SeriesID", param1.toString())
         with(recycSeasons) {
             adapter = SeriesSeasonsAdapter()
             layoutManager = LinearLayoutManager(activity)

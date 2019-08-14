@@ -6,4 +6,6 @@
     <color name="detail_bg">#232323</color>
     <color name="review_bg">#444</color>
     <color name="background">#dddddd</color>
+    <color name="separator">#dedede</color>
+    <color name="bg_bottom">#858585</color>
 </resources>

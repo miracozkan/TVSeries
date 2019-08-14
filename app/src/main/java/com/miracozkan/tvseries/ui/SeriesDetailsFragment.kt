@@ -1,7 +1,6 @@
 package com.miracozkan.tvseries.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,7 +47,6 @@ class SeriesDetailsFragment : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        Log.e("SeriesID", param1.toString())
         return inflater.inflate(R.layout.fragment_series_details, container, false)
     }
 

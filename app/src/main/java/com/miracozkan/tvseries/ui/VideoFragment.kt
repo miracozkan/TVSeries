@@ -30,6 +30,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.upstream.*
 import com.google.android.exoplayer2.util.Util
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.miracozkan.tvseries.R
 import com.miracozkan.tvseries.adapter.VideoPosterAdapter
 import com.miracozkan.tvseries.datalayer.model.PopularSeriesResult
@@ -38,6 +39,7 @@ import com.miracozkan.tvseries.utils.DependencyUtil
 import com.miracozkan.tvseries.utils.ViewModelFactory
 import com.miracozkan.tvseries.viewmodel.VideoViewModel
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.bottom_sheet_video.*
 import kotlinx.android.synthetic.main.fragment_video.*
 import kotlinx.android.synthetic.main.layout_video.*
 
@@ -75,18 +77,53 @@ class VideoFragment : Fragment(), View.OnClickListener {
 
     }
 
+    @SuppressLint("SwitchIntDef")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        btnBottomDetail.setOnClickListener(this)
+        val bottomSheet = BottomSheetBehavior.from(lytBottomSheet)
+
+        bottomSheet.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                    }
+                    BottomSheetBehavior.STATE_EXPANDED -> {//Acıldı
+                        recycImages.visibility = View.INVISIBLE
+                    }
+                    BottomSheetBehavior.STATE_COLLAPSED -> {//Kapandı
+                        recycImages.visibility = View.VISIBLE
+                    }
+                    BottomSheetBehavior.STATE_DRAGGING -> {
+                    }
+                    BottomSheetBehavior.STATE_SETTLING -> {
+                    }
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+//                Log.e("state", "onSlide")
+            }
+        })
+
+
         /**
          * Set UI component text
          */
+
+        txtStoryLineDescBottom.text = param1.overview
+        txtBottomCountry.text = param1.originCountry?.first()
+        txtBottomDate.text = param1.firstAirDate
+        txtBottomLang.text = param1.originalLanguage
+        txtBottomName.text = param1.originalName
+
         txtTitle.text = param1.originalName
         txtLike.text = param1.voteCount.toString()
         txtDislike.text = param1.voteAverage.toString()
 
         txtDislike.setOnClickListener(this)
         txtLike.setOnClickListener(this)
-        txtGoDetail.setOnClickListener(this)
 
         bandwidthMeter = DefaultBandwidthMeter()
         mediaDataSourceFactory = buildDataSourceFactory(true)
@@ -168,6 +205,7 @@ class VideoFragment : Fragment(), View.OnClickListener {
                     exoPlayer?.seekTo(5000)
                 }
                 barProg.visibility = View.GONE
+
             }
         }.extract("http://youtube.com/watch?v=$url", true, true)
     }
@@ -261,7 +299,7 @@ class VideoFragment : Fragment(), View.OnClickListener {
             R.id.txtLike -> {
 
             }
-            R.id.txtGoDetail -> {
+            R.id.btnBottomDetail -> {
                 detailActivityIntent.putExtra("seriesID", param1.id)
                 startActivity(detailActivityIntent)
             }

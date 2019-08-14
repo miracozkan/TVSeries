@@ -11,4 +11,10 @@
     <dimen name="placeholderImage">60dp</dimen>
     <dimen name="placeholderTextHeight">8dp</dimen>
     <dimen name="padding_10">10dp</dimen>
+
+    <dimen name="roundedBottomSheetCornerRadius">24dp</dimen>
+    <dimen name="roundedBottomSheetCornerRadiusTopPadding">8dp</dimen>
+    <dimen name="roundedBottomSheetCornerRadiusLeftPadding">8dp</dimen>
+    <dimen name="roundedBottomSheetCornerRadiusRightPadding">8dp</dimen>
+
 </resources>
