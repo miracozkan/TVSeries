@@ -63,7 +63,7 @@ class SeriesDetailsFragment : Fragment() {
                 (recycCast.adapter as SeriesCastAdapter).setNewItem(_seriesDetail.createdBy!!)
             } else {
                 txtSeriesDetailCast.append(" -> There is no cast ")
-                recycCast.visibility = View.GONE
+                recycCast.visibility = View.INVISIBLE
             }
         })
 
@@ -80,7 +80,6 @@ class SeriesDetailsFragment : Fragment() {
                 recycReviews.visibility = View.GONE
             }
         })
-
     }
 
     companion object {

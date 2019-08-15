@@ -3,7 +3,6 @@ package com.miracozkan.tvseries.adapter
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.miracozkan.tvseries.R
@@ -25,14 +24,12 @@ class SeriesReviewsViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
     private val txtReview = itemView.findViewById<TextView>(R.id.txtReview)
     private val txtReviewTitle = itemView.findViewById<TextView>(R.id.txtReviewTitle)
     private val txtReviewDetail = itemView.findViewById<TextView>(R.id.txtReviewDetail)
-    private val imgReviewerPhoto = itemView.findViewById<ImageView>(R.id.imgReviewerPhoto)
 
 
     @SuppressLint("SetTextI18n")
     fun bind(model: SeriesReviews) {
         txtReview.text = model.content
         txtReviewDetail.text = "Written by " + model.author
-        imgReviewerPhoto.setBackgroundResource(R.drawable.ic_android)
     }
 
 }

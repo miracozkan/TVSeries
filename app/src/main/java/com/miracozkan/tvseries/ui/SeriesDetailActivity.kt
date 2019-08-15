@@ -4,10 +4,12 @@ import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.miracozkan.tvseries.R
 import com.miracozkan.tvseries.adapter.SeriesDetailViewPagerAdapter
 import com.miracozkan.tvseries.datalayer.network.RetrofitClient
 import com.miracozkan.tvseries.reciever.InternetConnectionReciever
@@ -18,7 +20,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_series_detail.*
 
 
-class SeriesDetailActivity : AppCompatActivity() {
+class SeriesDetailActivity : AppCompatActivity(), View.OnClickListener {
 
     private val internetConnectionReceiver by lazy { InternetConnectionReciever() }
 
@@ -36,11 +38,12 @@ class SeriesDetailActivity : AppCompatActivity() {
                 ViewModelFactory(seriesDetailRepository)
         ).get(SeriesDetailViewModel::class.java)
     }
-
+    private lateinit var webSite: String
+    private lateinit var channelSite: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(com.miracozkan.tvseries.R.layout.activity_series_detail)
+        setContentView(R.layout.activity_series_detail)
 
         setSupportActionBar(toolbar as Toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -53,8 +56,11 @@ class SeriesDetailActivity : AppCompatActivity() {
             adapter = SeriesDetailViewPagerAdapter(supportFragmentManager, seriesID)
             tblSeriesDetailTitle.setupWithViewPager(this)
         }
-
+        lytOpenWeb.setOnClickListener(this)
+        lytOpenChannel.setOnClickListener(this)
         seriesDetailViewModel.seriesDetail.observe(this, Observer { _seriesDetail ->
+            webSite = _seriesDetail.homepage!!
+            channelSite = _seriesDetail.networks?.first()?.name!!
             _seriesDetail.genres?.forEach { _it ->
                 txtSeriesInfo.append(_it.name + " - ")
             }
@@ -70,6 +76,18 @@ class SeriesDetailActivity : AppCompatActivity() {
             scrollView.visibility = View.VISIBLE
         })
     }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.lytOpenWeb -> {
+                Toast.makeText(this, webSite, Toast.LENGTH_SHORT).show()
+            }
+            R.id.lytOpenChannel -> {
+                Toast.makeText(this, channelSite, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
 
     override fun onResume() {
         super.onResume()

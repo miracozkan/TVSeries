@@ -204,8 +204,6 @@ class VideoFragment : Fragment(), View.OnClickListener {
                     exoPlayer?.prepare(mediaSource, true, false)
                     exoPlayer?.seekTo(5000)
                 }
-                barProg.visibility = View.GONE
-
             }
         }.extract("http://youtube.com/watch?v=$url", true, true)
     }

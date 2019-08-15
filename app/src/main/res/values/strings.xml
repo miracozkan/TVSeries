@@ -23,9 +23,9 @@
     <string name="directors">Directors</string>
     <string name="user_reviews">User Reviews</string>
     <string name="web_sitesi">Web Sitesi</string>
-    <string name="listeye_ekle">Listeye Ekle</string>
     <string name="tur">Tür</string>
     <string name="dizi_erik">Dizi İçerik</string>
     <string name="download_poster">Download Poster</string>
     <string name="sw_pe_for_deta_l">SWİPE FOR DETAİL</string>
+    <string name="channel_site">Channel Site</string>
 </resources>
