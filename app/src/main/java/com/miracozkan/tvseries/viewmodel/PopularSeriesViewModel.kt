@@ -1,14 +1,9 @@
 package com.miracozkan.tvseries.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.miracozkan.tvseries.datalayer.model.PopularSeriesResult
 import com.miracozkan.tvseries.datalayer.repository.PopularSeriesRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlin.coroutines.CoroutineContext
 
 
 // Code with ❤
@@ -20,11 +15,8 @@ import kotlin.coroutines.CoroutineContext
 //│ 01/07/19 - 17:39            │
 //└─────────────────────────────┘
 
-class PopularSeriesViewModel(private val popularSeriesRepository: PopularSeriesRepository) : ViewModel() {
-
-    private val parentJob = Job()
-    private val coroutineContext: CoroutineContext get() = parentJob + Dispatchers.Main
-    private val scope = CoroutineScope(coroutineContext)
+class PopularSeriesViewModel(private val popularSeriesRepository: PopularSeriesRepository) :
+    BaseViewModel() {
 
     val popularSeriesList: MutableLiveData<List<PopularSeriesResult>> by lazy { MutableLiveData<List<PopularSeriesResult>>() }
 

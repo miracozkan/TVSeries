@@ -1,15 +1,10 @@
 package com.miracozkan.tvseries.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.miracozkan.tvseries.datalayer.model.Poster
 import com.miracozkan.tvseries.datalayer.model.VideoResult
 import com.miracozkan.tvseries.datalayer.repository.VideoRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlin.coroutines.CoroutineContext
 
 
 // Code with ❤
@@ -21,10 +16,8 @@ import kotlin.coroutines.CoroutineContext
 //│ 13/07/19 - 17:50            │
 //└─────────────────────────────┘
 
-class VideoViewModel(private val videoRepository: VideoRepository) : ViewModel() {
-    private val parentJob = Job()
-    private val coroutineContext: CoroutineContext get() = parentJob + Dispatchers.Main
-    private val scope = CoroutineScope(coroutineContext)
+class VideoViewModel(private val videoRepository: VideoRepository) : BaseViewModel() {
+
     val seriesVideo: MutableLiveData<List<VideoResult>> by lazy { MutableLiveData<List<VideoResult>>() }
     val seriesImage: MutableLiveData<List<Poster>> by lazy { MutableLiveData<List<Poster>>() }
 

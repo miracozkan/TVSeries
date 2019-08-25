@@ -17,14 +17,14 @@ class MainActivity : AppCompatActivity() {
 
     private val popularSeriesRepository by lazy {
         DependencyUtil.getPopularSeriesRepository(
-                RetrofitClient.getClient()
+            RetrofitClient.getClient()
         )
     }
 
     private val popularSeriesViewModel by lazy {
         ViewModelProviders.of(
-                this,
-                ViewModelFactory(popularSeriesRepository)
+            this,
+            ViewModelFactory(popularSeriesRepository)
         ).get(PopularSeriesViewModel::class.java)
     }
 
@@ -47,4 +47,5 @@ class MainActivity : AppCompatActivity() {
             offscreenPageLimit = 3
         }
     }
+
 }
