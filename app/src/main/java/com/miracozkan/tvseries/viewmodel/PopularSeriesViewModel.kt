@@ -1,8 +1,10 @@
 package com.miracozkan.tvseries.viewmodel
 
 import androidx.lifecycle.MutableLiveData
+import com.miracozkan.tvseries.base.BaseViewModel
 import com.miracozkan.tvseries.datalayer.model.PopularSeriesResult
 import com.miracozkan.tvseries.datalayer.repository.PopularSeriesRepository
+import com.miracozkan.tvseries.utils.Resource
 import kotlinx.coroutines.launch
 
 
@@ -18,7 +20,7 @@ import kotlinx.coroutines.launch
 class PopularSeriesViewModel(private val popularSeriesRepository: PopularSeriesRepository) :
     BaseViewModel() {
 
-    val popularSeriesList: MutableLiveData<List<PopularSeriesResult>> by lazy { MutableLiveData<List<PopularSeriesResult>>() }
+    val popularSeriesList: MutableLiveData<Resource<List<PopularSeriesResult>>> by lazy { MutableLiveData<Resource<List<PopularSeriesResult>>>() }
 
     init {
         getPopularSeries()
@@ -26,7 +28,12 @@ class PopularSeriesViewModel(private val popularSeriesRepository: PopularSeriesR
 
     private fun getPopularSeries() {
         scope.launch {
-            popularSeriesList.postValue(popularSeriesRepository.getPopularSeries())
+            popularSeriesList.postValue(Resource.Loading())
+            if (popularSeriesRepository.getPopularSeries().isSuccessful) {
+                popularSeriesList.postValue(Resource.Success(popularSeriesRepository.getPopularSeries().body()?.popularSeriesResults))
+            } else {
+                popularSeriesList.postValue(Resource.Failure(popularSeriesRepository.getPopularSeries().message()))
+            }
         }
     }
 }

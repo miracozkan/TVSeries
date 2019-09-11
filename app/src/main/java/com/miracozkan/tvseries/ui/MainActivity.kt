@@ -1,7 +1,9 @@
 package com.miracozkan.tvseries.ui
 
 import android.os.Bundle
+import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -9,6 +11,7 @@ import com.miracozkan.tvseries.R
 import com.miracozkan.tvseries.adapter.TrailerPagerAdapter
 import com.miracozkan.tvseries.datalayer.network.RetrofitClient
 import com.miracozkan.tvseries.utils.DependencyUtil
+import com.miracozkan.tvseries.utils.Resource
 import com.miracozkan.tvseries.utils.ViewModelFactory
 import com.miracozkan.tvseries.viewmodel.PopularSeriesViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -32,14 +35,30 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
     }
 
     override fun onStart() {
         super.onStart()
 
-        popularSeriesViewModel.popularSeriesList.observe(this, Observer { _seriesList ->
-            (vpTrailers.adapter as TrailerPagerAdapter).setVideoList(_seriesList!!)
+        popularSeriesViewModel.popularSeriesList.observe(this, Observer { _resource ->
+            //            (vpTrailers.adapter as TrailerPagerAdapter).setVideoList(_seriesList!!)
+            when (_resource) {
+                is Resource.Loading -> {
+                    showProgress()
+                }
+                is Resource.Failure -> {
+                    hideProgress()
+                    Toast.makeText(this, _resource.cause, Toast.LENGTH_SHORT).show()
+                }
+                is Resource.Success -> {
+                    hideProgress()
+                    (vpTrailers.adapter as TrailerPagerAdapter).setVideoList(_resource.data!!)
+                }
+            }
         })
 
         vpTrailers.apply {
@@ -48,4 +67,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun hideProgress() {
+        prg.visibility = View.INVISIBLE
+    }
+
+    private fun showProgress() {
+        prg.visibility = View.VISIBLE
+    }
 }

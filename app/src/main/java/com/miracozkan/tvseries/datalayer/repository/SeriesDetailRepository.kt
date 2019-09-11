@@ -1,10 +1,10 @@
 package com.miracozkan.tvseries.datalayer.repository
 
 import com.miracozkan.tvseries.BuildConfig
+import com.miracozkan.tvseries.base.BaseRepository
 import com.miracozkan.tvseries.datalayer.model.SeriesReviews
 import com.miracozkan.tvseries.datalayer.network.ProjectService
 import com.miracozkan.tvseries.datalayer.network.response.GetSeriesDetail
-import com.miracozkan.tvseries.utils.BaseRepository
 
 
 // Code with ❤

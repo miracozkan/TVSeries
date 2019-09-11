@@ -2,12 +2,13 @@ package com.miracozkan.tvseries.utils
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.miracozkan.tvseries.base.BaseRepository
 import com.miracozkan.tvseries.datalayer.repository.PopularSeriesRepository
 import com.miracozkan.tvseries.datalayer.repository.SeriesDetailRepository
 import com.miracozkan.tvseries.datalayer.repository.VideoRepository
 import com.miracozkan.tvseries.viewmodel.PopularSeriesViewModel
 import com.miracozkan.tvseries.viewmodel.SeriesDetailViewModel
-import com.miracozkan.tvseries.viewmodel.VideoViewModel
+import com.miracozkan.tvseries.viewmodelgradle.VideoViewModel
 
 
 // Code with ❤

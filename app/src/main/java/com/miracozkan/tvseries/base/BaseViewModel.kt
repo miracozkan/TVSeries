@@ -1,9 +1,10 @@
-package com.miracozkan.tvseries.viewmodel
+package com.miracozkan.tvseries.base
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlin.coroutines.CoroutineContext
 
 
@@ -20,4 +21,9 @@ abstract class BaseViewModel : ViewModel() {
     private val parentJob = Job()
     private val coroutineContext: CoroutineContext get() = parentJob + Dispatchers.Main
     val scope = CoroutineScope(coroutineContext)
+
+    override fun onCleared() {
+        super.onCleared()
+        coroutineContext.cancel()
+    }
 }

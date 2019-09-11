@@ -36,8 +36,9 @@ import com.miracozkan.tvseries.adapter.VideoPosterAdapter
 import com.miracozkan.tvseries.datalayer.model.PopularSeriesResult
 import com.miracozkan.tvseries.datalayer.network.RetrofitClient
 import com.miracozkan.tvseries.utils.DependencyUtil
+import com.miracozkan.tvseries.utils.Resource
 import com.miracozkan.tvseries.utils.ViewModelFactory
-import com.miracozkan.tvseries.viewmodel.VideoViewModel
+import com.miracozkan.tvseries.viewmodelgradle.VideoViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.bottom_sheet_video.*
 import kotlinx.android.synthetic.main.fragment_video.*
@@ -57,8 +58,8 @@ class VideoFragment : Fragment(), View.OnClickListener {
     }
     private val videoViewModel by lazy {
         ViewModelProviders.of(
-                this,
-                ViewModelFactory(videoRepository)
+            this,
+            ViewModelFactory(videoRepository)
         ).get(VideoViewModel::class.java)
     }
 
@@ -70,8 +71,8 @@ class VideoFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_video, container, false)
 
@@ -113,7 +114,11 @@ class VideoFragment : Fragment(), View.OnClickListener {
          */
 
         txtStoryLineDescBottom.text = param1.overview
-        txtBottomCountry.text = param1.originCountry?.first()
+        if (param1.originCountry.isNullOrEmpty()) {
+            txtBottomCountry.text = "Gone"
+        } else {
+            txtBottomCountry.text = param1.originCountry?.first()
+        }
         txtBottomDate.text = param1.firstAirDate
         txtBottomLang.text = param1.originalLanguage
         txtBottomName.text = param1.originalName
@@ -130,8 +135,8 @@ class VideoFragment : Fragment(), View.OnClickListener {
 
         if (exoPlayer == null) {
             exoPlayer = ExoPlayerFactory.newSimpleInstance(
-                    activity,
-                    DefaultTrackSelector(), DefaultLoadControl()
+                activity,
+                DefaultTrackSelector(), DefaultLoadControl()
             )
         }
 
@@ -150,10 +155,10 @@ class VideoFragment : Fragment(), View.OnClickListener {
                 }
                 val poster = myDialog.findViewById<ImageView>(R.id.imgPosterDetail)
                 Picasso
-                        .get()
-                        .load("https://image.tmdb.org/t/p/w500" + _poster.filePath)
-                        .resize(216, 384)
-                        .into(poster)
+                    .get()
+                    .load("https://image.tmdb.org/t/p/w500" + _poster.filePath)
+                    .resize(216, 384)
+                    .into(poster)
                 poster.setOnClickListener {
                     Toast.makeText(context, _poster.filePath, Toast.LENGTH_SHORT).show()
                 }
@@ -167,25 +172,54 @@ class VideoFragment : Fragment(), View.OnClickListener {
          * Network Req
          */
 
-        videoViewModel.seriesVideo.observe(this, Observer { _videoList ->
-            if (!_videoList.isNullOrEmpty()) {
-                releaseExo(_videoList.last().key!!)
-            } else {
-                releaseExo("iwNp2E1aV3Q")
-                Toast.makeText(
-                        activity,
-                        "This TV Series Has Not Trailer",
-                        Toast.LENGTH_LONG
-                ).show()
+        videoViewModel.seriesVideo.observe(this, Observer { _resource ->
+
+            when (_resource) {
+                is Resource.Loading -> {
+                    showProgress()
+                }
+                is Resource.Failure -> {
+                    hideProgress()
+                    Toast.makeText(activity, _resource.cause, Toast.LENGTH_SHORT).show()
+                }
+                is Resource.Success -> {
+                    if (!_resource.data.isNullOrEmpty()) {
+                        releaseExo(_resource.data.last().key!!)
+                        hideProgress()
+                    } else {
+                        hideProgress()
+                        releaseExo("iwNp2E1aV3Q")
+                        Toast.makeText(
+                            activity,
+                            "This TV Series Has Not Trailer",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
             }
         })
 
-        videoViewModel.seriesImage.observe(this, Observer { _posterList ->
-            if (!_posterList.isNullOrEmpty()) {
-                (recycImages.adapter as VideoPosterAdapter).setNewItem(_posterList)
-                shimmer_view_container.stopShimmerAnimation()
-                shimmer_view_container.visibility = View.GONE
+        videoViewModel.seriesImage.observe(this, Observer { _resource ->
+
+            when (_resource) {
+                is Resource.Loading -> {
+                    showProgress()
+                }
+                is Resource.Failure -> {
+                    hideProgress()
+                    Toast.makeText(activity, _resource.cause, Toast.LENGTH_SHORT).show()
+                }
+                is Resource.Success -> {
+                    if (!_resource.data.isNullOrEmpty()) {
+                        (recycImages.adapter as VideoPosterAdapter).setNewItem(_resource.data)
+                        shimmer_view_container.stopShimmerAnimation()
+                        shimmer_view_container.visibility = View.GONE
+                        hideProgress()
+                    }
+                }
             }
+
+
         })
     }
 
@@ -199,8 +233,8 @@ class VideoFragment : Fragment(), View.OnClickListener {
                     val downloadUrl = ytFiles.get(iTag).url
                     val extractorsFactory = DefaultExtractorsFactory()
                     val mediaSource = ExtractorMediaSource.Factory(mediaDataSourceFactory)
-                            .setExtractorsFactory(extractorsFactory)
-                            .createMediaSource(Uri.parse(downloadUrl))
+                        .setExtractorsFactory(extractorsFactory)
+                        .createMediaSource(Uri.parse(downloadUrl))
                     exoPlayer?.prepare(mediaSource, true, false)
                     exoPlayer?.seekTo(5000)
                 }
@@ -270,8 +304,8 @@ class VideoFragment : Fragment(), View.OnClickListener {
 
     private fun buildDataSourceFactory(bandwidthMeter: DefaultBandwidthMeter?): DataSource.Factory {
         return DefaultDataSourceFactory(
-                context, bandwidthMeter,
-                buildHttpDataSourceFactory(bandwidthMeter)
+            context, bandwidthMeter,
+            buildHttpDataSourceFactory(bandwidthMeter)
         )
     }
 
@@ -282,11 +316,11 @@ class VideoFragment : Fragment(), View.OnClickListener {
     companion object {
         @JvmStatic
         fun newInstance(param1: PopularSeriesResult) =
-                VideoFragment().apply {
-                    arguments = Bundle().apply {
-                        putParcelable("seriesData", param1)
-                    }
+            VideoFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelable("seriesData", param1)
                 }
+            }
     }
 
     override fun onClick(v: View?) {
@@ -302,5 +336,13 @@ class VideoFragment : Fragment(), View.OnClickListener {
                 startActivity(detailActivityIntent)
             }
         }
+    }
+
+    private fun hideProgress() {
+        prgBar.visibility = View.INVISIBLE
+    }
+
+    private fun showProgress() {
+        prgBar.visibility = View.VISIBLE
     }
 }

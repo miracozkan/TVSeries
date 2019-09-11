@@ -1,6 +1,7 @@
 package com.miracozkan.tvseries.viewmodel
 
 import androidx.lifecycle.MutableLiveData
+import com.miracozkan.tvseries.base.BaseViewModel
 import com.miracozkan.tvseries.datalayer.model.SeriesReviews
 import com.miracozkan.tvseries.datalayer.network.response.GetSeriesDetail
 import com.miracozkan.tvseries.datalayer.repository.SeriesDetailRepository
