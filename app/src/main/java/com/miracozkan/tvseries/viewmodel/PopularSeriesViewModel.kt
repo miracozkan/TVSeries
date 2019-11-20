@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.miracozkan.tvseries.base.BaseViewModel
 import com.miracozkan.tvseries.datalayer.model.PopularSeriesResult
 import com.miracozkan.tvseries.datalayer.repository.PopularSeriesRepository
+import com.miracozkan.tvseries.utils.Event
 import com.miracozkan.tvseries.utils.Resource
 import kotlinx.coroutines.launch
 
@@ -20,7 +21,11 @@ import kotlinx.coroutines.launch
 class PopularSeriesViewModel(private val popularSeriesRepository: PopularSeriesRepository) :
     BaseViewModel() {
 
-    val popularSeriesList: MutableLiveData<Resource<List<PopularSeriesResult>>> by lazy { MutableLiveData<Resource<List<PopularSeriesResult>>>() }
+    private val _popularSeriesList: MutableLiveData<Resource<Event<List<PopularSeriesResult>>>>
+            by lazy { MutableLiveData<Resource<Event<List<PopularSeriesResult>>>>() }
+
+    val popularSeriesList: MutableLiveData<Resource<Event<List<PopularSeriesResult>>>>
+        get() = _popularSeriesList
 
     init {
         getPopularSeries()
@@ -28,11 +33,13 @@ class PopularSeriesViewModel(private val popularSeriesRepository: PopularSeriesR
 
     private fun getPopularSeries() {
         scope.launch {
-            popularSeriesList.postValue(Resource.Loading())
+            _popularSeriesList.postValue(Resource.Loading())
             if (popularSeriesRepository.getPopularSeries().isSuccessful) {
-                popularSeriesList.postValue(Resource.Success(popularSeriesRepository.getPopularSeries().body()?.popularSeriesResults))
+                _popularSeriesList.postValue(
+                    Resource.Success(Event(popularSeriesRepository.getPopularSeries().body()?.popularSeriesResults!!))
+                )
             } else {
-                popularSeriesList.postValue(Resource.Failure(popularSeriesRepository.getPopularSeries().message()))
+                _popularSeriesList.postValue(Resource.Failure(popularSeriesRepository.getPopularSeries().message()))
             }
         }
     }

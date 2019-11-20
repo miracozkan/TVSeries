@@ -1,7 +1,6 @@
 package com.miracozkan.tvseries.ui
 
 import android.os.Bundle
-import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -10,9 +9,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.miracozkan.tvseries.R
 import com.miracozkan.tvseries.adapter.TrailerPagerAdapter
 import com.miracozkan.tvseries.datalayer.network.RetrofitClient
-import com.miracozkan.tvseries.utils.DependencyUtil
-import com.miracozkan.tvseries.utils.Resource
-import com.miracozkan.tvseries.utils.ViewModelFactory
+import com.miracozkan.tvseries.utils.*
 import com.miracozkan.tvseries.viewmodel.PopularSeriesViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -35,17 +32,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        /**
+         * For Fullscreen Videos
+         */
+
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
-    }
-
-    override fun onStart() {
-        super.onStart()
 
         popularSeriesViewModel.popularSeriesList.observe(this, Observer { _resource ->
-            //            (vpTrailers.adapter as TrailerPagerAdapter).setVideoList(_seriesList!!)
             when (_resource) {
                 is Resource.Loading -> {
                     showProgress()
@@ -56,7 +52,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 is Resource.Success -> {
                     hideProgress()
-                    (vpTrailers.adapter as TrailerPagerAdapter).setVideoList(_resource.data!!)
+                    (vpTrailers.adapter as TrailerPagerAdapter).setVideoList(_resource.data?.getContentIfHandled()!!)
                 }
             }
         })
@@ -67,11 +63,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * This interface can be unnecessary
+     */
     private fun hideProgress() {
-        prg.visibility = View.INVISIBLE
+        prg.hideProgress()
     }
 
     private fun showProgress() {
-        prg.visibility = View.VISIBLE
+        prg.showProgress()
     }
 }

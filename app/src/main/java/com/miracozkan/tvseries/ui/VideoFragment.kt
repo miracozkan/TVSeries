@@ -35,9 +35,7 @@ import com.miracozkan.tvseries.R
 import com.miracozkan.tvseries.adapter.VideoPosterAdapter
 import com.miracozkan.tvseries.datalayer.model.PopularSeriesResult
 import com.miracozkan.tvseries.datalayer.network.RetrofitClient
-import com.miracozkan.tvseries.utils.DependencyUtil
-import com.miracozkan.tvseries.utils.Resource
-import com.miracozkan.tvseries.utils.ViewModelFactory
+import com.miracozkan.tvseries.utils.*
 import com.miracozkan.tvseries.viewmodelgradle.VideoViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.bottom_sheet_video.*
@@ -78,7 +76,7 @@ class VideoFragment : Fragment(), View.OnClickListener {
 
     }
 
-    @SuppressLint("SwitchIntDef")
+    @SuppressLint("SwitchIntDef", "SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -91,10 +89,10 @@ class VideoFragment : Fragment(), View.OnClickListener {
                     BottomSheetBehavior.STATE_HIDDEN -> {
                     }
                     BottomSheetBehavior.STATE_EXPANDED -> {//Acıldı
-                        recycImages.visibility = View.INVISIBLE
+                        recycImages.dissappearProgress()
                     }
                     BottomSheetBehavior.STATE_COLLAPSED -> {//Kapandı
-                        recycImages.visibility = View.VISIBLE
+                        recycImages.showProgress()
                     }
                     BottomSheetBehavior.STATE_DRAGGING -> {
                     }
@@ -339,10 +337,10 @@ class VideoFragment : Fragment(), View.OnClickListener {
     }
 
     private fun hideProgress() {
-        prgBar.visibility = View.INVISIBLE
+        prgBar.hideProgress()
     }
 
     private fun showProgress() {
-        prgBar.visibility = View.VISIBLE
+        prgBar.showProgress()
     }
 }
