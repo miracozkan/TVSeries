@@ -1,11 +1,15 @@
-package com.miracozkan.tvseries.viewmodelgradle
+package com.miracozkan.tvseries.viewmodel
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.miracozkan.tvseries.base.BaseViewModel
 import com.miracozkan.tvseries.datalayer.model.Poster
 import com.miracozkan.tvseries.datalayer.model.VideoResult
 import com.miracozkan.tvseries.datalayer.repository.VideoRepository
-import com.miracozkan.tvseries.utils.Resource
+import com.miracozkan.tvseries.utils.Result
+import com.miracozkan.tvseries.utils.Status.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 
@@ -20,32 +24,67 @@ import kotlinx.coroutines.launch
 
 class VideoViewModel(private val videoRepository: VideoRepository) : BaseViewModel() {
 
-    val seriesVideo: MutableLiveData<Resource<List<VideoResult>>> by lazy { MutableLiveData<Resource<List<VideoResult>>>() }
-    val seriesImage: MutableLiveData<Resource<List<Poster>>> by lazy { MutableLiveData<Resource<List<Poster>>>() }
+    val seriesVideo: MutableLiveData<Result<List<VideoResult>>> by lazy { MutableLiveData<Result<List<VideoResult>>>() }
+    val seriesImage: MutableLiveData<Result<List<Poster>>> by lazy { MutableLiveData<Result<List<Poster>>>() }
+
+    private var videoJob: Job? = null
+    private var imageJob: Job? = null
 
     init {
-        getVideos()
-        getImages()
+        setVideosJob()
+        setImageJob()
     }
 
-    private fun getVideos() {
-        scope.launch {
-            seriesVideo.postValue(Resource.Loading())
-            if (videoRepository.getSeriesVideo().isSuccessful) {
-                seriesVideo.postValue(Resource.Success(videoRepository.getSeriesVideo().body()?.results))
-            } else {
-                seriesVideo.postValue(Resource.Failure(videoRepository.getSeriesVideo().message()))
+    private fun setVideosJob() {
+        if (videoJob?.isActive == true) {
+            return
+        }
+        videoJob = fetchVideos()
+    }
+
+    private fun fetchVideos(): Job? {
+        return viewModelScope.launch(Dispatchers.IO) {
+            when (videoRepository.getSeriesVideo().status) {
+                SUCCESS -> {
+                    seriesVideo.postValue(Result.success((videoRepository.getSeriesVideo().data?.results).orEmpty()))
+                }
+                ERROR -> {
+                    seriesVideo.postValue(
+                        Result.error(
+                            videoRepository.getSeriesVideo().message ?: "VideoViewModel Error!!"
+                        )
+                    )
+                }
+                LOADING -> {
+                    seriesVideo.postValue(Result.loading())
+                }
             }
         }
     }
 
-    private fun getImages() {
-        scope.launch {
-            seriesImage.postValue(Resource.Loading())
-            if (videoRepository.getSeriesVideo().isSuccessful) {
-                seriesImage.postValue(Resource.Success(videoRepository.getSeriesImages().body()?.posters))
-            } else {
-                seriesImage.postValue(Resource.Failure(videoRepository.getSeriesImages().message()))
+    private fun setImageJob() {
+        if (imageJob?.isActive == true) {
+            return
+        }
+        imageJob = fetchImage()
+    }
+
+    private fun fetchImage(): Job? {
+        return viewModelScope.launch(Dispatchers.IO) {
+            when (videoRepository.getSeriesImages().status) {
+                SUCCESS -> {
+                    seriesImage.postValue(Result.success(videoRepository.getSeriesImages().data?.posters.orEmpty()))
+                }
+                ERROR -> {
+                    seriesImage.postValue(
+                        Result.error(
+                            videoRepository.getSeriesImages().message ?: "VideoViewModel Error!!"
+                        )
+                    )
+                }
+                LOADING -> {
+                    seriesImage.postValue(Result.loading())
+                }
             }
         }
     }

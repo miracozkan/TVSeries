@@ -1,4 +1,4 @@
-package com.miracozkan.tvseries.ui
+package com.miracozkan.tvseries.ui.fragment
 
 import android.annotation.SuppressLint
 import android.app.Dialog
@@ -7,13 +7,13 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,17 +33,19 @@ import com.google.android.exoplayer2.util.Util
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.miracozkan.tvseries.R
 import com.miracozkan.tvseries.adapter.VideoPosterAdapter
+import com.miracozkan.tvseries.base.BaseFragment
 import com.miracozkan.tvseries.datalayer.model.PopularSeriesResult
 import com.miracozkan.tvseries.datalayer.network.RetrofitClient
+import com.miracozkan.tvseries.ui.activity.SeriesDetailActivity
 import com.miracozkan.tvseries.utils.*
-import com.miracozkan.tvseries.viewmodelgradle.VideoViewModel
+import com.miracozkan.tvseries.viewmodel.VideoViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.bottom_sheet_video.*
 import kotlinx.android.synthetic.main.fragment_video.*
 import kotlinx.android.synthetic.main.layout_video.*
 
 
-class VideoFragment : Fragment(), View.OnClickListener {
+class VideoFragment : BaseFragment(), View.OnClickListener {
 
     private val detailActivityIntent by lazy { Intent(activity, SeriesDetailActivity::class.java) }
     private lateinit var param1: PopularSeriesResult
@@ -76,14 +78,14 @@ class VideoFragment : Fragment(), View.OnClickListener {
 
     }
 
-    @SuppressLint("SwitchIntDef", "SetTextI18n")
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    @SuppressLint("SwitchIntDef")
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         btnBottomDetail.setOnClickListener(this)
         val bottomSheet = BottomSheetBehavior.from(lytBottomSheet)
 
         bottomSheet.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_HIDDEN -> {
@@ -102,32 +104,24 @@ class VideoFragment : Fragment(), View.OnClickListener {
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-//                Log.e("state", "onSlide")
+                Log.e("state", "onSlide")
             }
         })
-
-
-        /**
-         * Set UI component text
-         */
-
-        txtStoryLineDescBottom.text = param1.overview
-        if (param1.originCountry.isNullOrEmpty()) {
-            txtBottomCountry.text = "Gone"
-        } else {
-            txtBottomCountry.text = param1.originCountry?.first()
-        }
-        txtBottomDate.text = param1.firstAirDate
-        txtBottomLang.text = param1.originalLanguage
-        txtBottomName.text = param1.originalName
-
-        txtTitle.text = param1.originalName
-        txtLike.text = param1.voteCount.toString()
-        txtDislike.text = param1.voteAverage.toString()
 
         txtDislike.setOnClickListener(this)
         txtLike.setOnClickListener(this)
 
+        initExo()
+        initUi()
+        /**
+         * Network Req
+         */
+
+        initSeriesVidoeObserver()
+        initSeriesImageObserver()
+    }
+
+    private fun initExo() {
         bandwidthMeter = DefaultBandwidthMeter()
         mediaDataSourceFactory = buildDataSourceFactory(true)
 
@@ -143,9 +137,25 @@ class VideoFragment : Fragment(), View.OnClickListener {
             useController = false
             resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
         }
+    }
+
+    private fun initUi() {
+
+        txtStoryLineDescBottom.text = param1.overview
+        if (param1.originCountry.isNullOrEmpty()) {
+            txtBottomCountry.text = "Gone"
+        } else {
+            txtBottomCountry.text = param1.originCountry?.first()
+        }
+        txtBottomDate.text = param1.firstAirDate
+        txtBottomLang.text = param1.originalLanguage
+        txtBottomName.text = param1.originalName
+
+        txtTitle.text = param1.originalName
+        txtLike.text = param1.voteCount.toString()
+        txtDislike.text = param1.voteAverage.toString()
 
         with(recycImages) {
-
             adapter = VideoPosterAdapter { _poster ->
                 val myDialog = Dialog(activity!!).apply {
                     setContentView(R.layout.dialog_poster_detail)
@@ -162,30 +172,26 @@ class VideoFragment : Fragment(), View.OnClickListener {
                 }
                 myDialog.show()
             }
-
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
+    }
 
-        /**
-         * Network Req
-         */
-
+    private fun initSeriesVidoeObserver() {
         videoViewModel.seriesVideo.observe(this, Observer { _resource ->
-
-            when (_resource) {
-                is Resource.Loading -> {
-                    showProgress()
+            when (_resource.status) {
+                Status.LOADING -> {
+                    prgBar.showProgress()
                 }
-                is Resource.Failure -> {
-                    hideProgress()
-                    Toast.makeText(activity, _resource.cause, Toast.LENGTH_SHORT).show()
+                Status.ERROR -> {
+                    prgBar.hideProgress()
+                    Toast.makeText(activity, _resource.message, Toast.LENGTH_SHORT).show()
                 }
-                is Resource.Success -> {
+                Status.SUCCESS -> {
                     if (!_resource.data.isNullOrEmpty()) {
                         releaseExo(_resource.data.last().key!!)
-                        hideProgress()
+                        prgBar.hideProgress()
                     } else {
-                        hideProgress()
+                        prgBar.hideProgress()
                         releaseExo("iwNp2E1aV3Q")
                         Toast.makeText(
                             activity,
@@ -196,32 +202,30 @@ class VideoFragment : Fragment(), View.OnClickListener {
                 }
             }
         })
+    }
 
+    private fun initSeriesImageObserver() {
         videoViewModel.seriesImage.observe(this, Observer { _resource ->
-
-            when (_resource) {
-                is Resource.Loading -> {
-                    showProgress()
+            when (_resource.status) {
+                Status.LOADING -> {
+                    prgBar.showProgress()
                 }
-                is Resource.Failure -> {
-                    hideProgress()
-                    Toast.makeText(activity, _resource.cause, Toast.LENGTH_SHORT).show()
+                Status.ERROR -> {
+                    prgBar.hideProgress()
+                    Toast.makeText(activity, _resource.message, Toast.LENGTH_SHORT).show()
                 }
-                is Resource.Success -> {
+                Status.SUCCESS -> {
                     if (!_resource.data.isNullOrEmpty()) {
                         (recycImages.adapter as VideoPosterAdapter).setNewItem(_resource.data)
                         shimmer_view_container.stopShimmerAnimation()
                         shimmer_view_container.visibility = View.GONE
-                        hideProgress()
+                        prgBar.hideProgress()
                     }
                 }
             }
-
-
         })
     }
 
-    @SuppressLint("StaticFieldLeak")
     private fun releaseExo(url: String) {
         exoPlayer?.videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
         object : YouTubeExtractor(context!!) {
@@ -311,16 +315,6 @@ class VideoFragment : Fragment(), View.OnClickListener {
         return DefaultHttpDataSourceFactory("exoplayer-codelab", bandwidthMeter)
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: PopularSeriesResult) =
-            VideoFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable("seriesData", param1)
-                }
-            }
-    }
-
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.txtDislike -> {
@@ -336,11 +330,13 @@ class VideoFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    private fun hideProgress() {
-        prgBar.hideProgress()
-    }
-
-    private fun showProgress() {
-        prgBar.showProgress()
+    companion object {
+        @JvmStatic
+        fun newInstance(param1: PopularSeriesResult) =
+            VideoFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelable("seriesData", param1)
+                }
+            }
     }
 }

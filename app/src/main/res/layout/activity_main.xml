@@ -5,7 +5,7 @@
         android:id="@+id/lytMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.MainActivity">
+        tools:context=".ui.activity.MainActivity">
 
     <androidx.viewpager.widget.ViewPager
             android:id="@+id/vpTrailers"

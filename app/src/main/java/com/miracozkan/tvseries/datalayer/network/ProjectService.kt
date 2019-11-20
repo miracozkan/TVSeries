@@ -1,7 +1,6 @@
 package com.miracozkan.tvseries.datalayer.network
 
 import com.miracozkan.tvseries.datalayer.network.response.*
-import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -21,32 +20,32 @@ import retrofit2.http.Query
 interface ProjectService {
 
     @GET("tv/popular")
-    fun getPopularSeriesAsync(
+    suspend fun getPopularSeriesAsync(
         @Query("api_key") apiKey: String
-    ): Deferred<Response<GetPopular>>
+    ): Response<GetPopular>
 
     @GET("tv/{seriesID}/videos")
-    fun getSeriesVideoAsync(
+    suspend fun getSeriesVideoAsync(
         @Path("seriesID") seriesID: String,
         @Query("api_key") apiKey: String
-    ): Deferred<Response<GetVideo>>
+    ): Response<GetVideo>
 
     @GET("tv/{seriesID}/images")
-    fun getSeriesImageAsync(
+    suspend fun getSeriesImageAsync(
         @Path("seriesID") seriesID: String,
         @Query("api_key") apiKey: String
-    ): Deferred<Response<GetImages>>
+    ): Response<GetImages>
 
     @Headers("Access-Control-Expose-Headers: Retry-After")
     @GET("tv/{seriesID}/reviews")
-    fun getSeriesReviewsAsync(
-            @Path("seriesID") seriesID: Int,
-            @Query("api_key") apiKey: String
-    ): Deferred<Response<GetSeriesReviews>>
+    suspend fun getSeriesReviewsAsync(
+        @Path("seriesID") seriesID: Int,
+        @Query("api_key") apiKey: String
+    ): Response<GetSeriesReviews>
 
     @GET("tv/{seriesID}")
-    fun getSeriesDetailAsync(
-            @Path("seriesID") seriesID: Int,
-            @Query("api_key") apiKey: String
-    ): Deferred<Response<GetSeriesDetail>>
+    suspend fun getSeriesDetailAsync(
+        @Path("seriesID") seriesID: Int,
+        @Query("api_key") apiKey: String
+    ): Response<GetSeriesDetail>
 }

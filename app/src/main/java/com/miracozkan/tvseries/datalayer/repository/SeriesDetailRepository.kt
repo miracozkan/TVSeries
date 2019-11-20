@@ -2,9 +2,10 @@ package com.miracozkan.tvseries.datalayer.repository
 
 import com.miracozkan.tvseries.BuildConfig
 import com.miracozkan.tvseries.base.BaseRepository
-import com.miracozkan.tvseries.datalayer.model.SeriesReviews
 import com.miracozkan.tvseries.datalayer.network.ProjectService
 import com.miracozkan.tvseries.datalayer.network.response.GetSeriesDetail
+import com.miracozkan.tvseries.datalayer.network.response.GetSeriesReviews
+import com.miracozkan.tvseries.utils.Result
 
 
 // Code with ❤
@@ -17,21 +18,19 @@ import com.miracozkan.tvseries.datalayer.network.response.GetSeriesDetail
 //└─────────────────────────────┘
 
 class SeriesDetailRepository(
-        private val projectService: ProjectService,
-        private val seriesID: Int
+    private val projectService: ProjectService,
+    private val seriesID: Int
 ) : BaseRepository() {
 
-    suspend fun getSeriesReview(): MutableList<SeriesReviews> {
-        return safeApiCall(
-            call = { projectService.getSeriesReviewsAsync(seriesID, BuildConfig.API_KEY).await() },
-            error = "Error fetching news"
-        )?.results!!.toMutableList()
+    suspend fun getSeriesDetail(): Result<GetSeriesDetail> {
+        return getResult {
+            projectService.getSeriesDetailAsync(seriesID, BuildConfig.API_KEY)
+        }
     }
 
-    suspend fun getSeriesDetail(): GetSeriesDetail {
-        return safeApiCall(
-            call = { projectService.getSeriesDetailAsync(seriesID, BuildConfig.API_KEY).await() },
-            error = "Error fetching news"
-        )!!
+    suspend fun getSeriesReview(): Result<GetSeriesReviews> {
+        return getResult {
+            projectService.getSeriesReviewsAsync(seriesID, BuildConfig.API_KEY)
+        }
     }
 }

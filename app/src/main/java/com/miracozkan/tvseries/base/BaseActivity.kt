@@ -1,6 +1,6 @@
 package com.miracozkan.tvseries.base
 
-import androidx.lifecycle.ViewModel
+import androidx.appcompat.app.AppCompatActivity
 
 
 // Code with ❤
@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel
 //│ ─────────────────────────── │
 //│ mirac.ozkan123@gmail.com    │
 //│ ─────────────────────────── │
-//│ 25.08.2019 - 10:11            │
+//│ 20.11.2019 - 22:57          │
 //└─────────────────────────────┘
 
-abstract class BaseViewModel : ViewModel()
+open class BaseActivity : AppCompatActivity()

@@ -5,7 +5,7 @@ import com.miracozkan.tvseries.base.BaseRepository
 import com.miracozkan.tvseries.datalayer.network.ProjectService
 import com.miracozkan.tvseries.datalayer.network.response.GetImages
 import com.miracozkan.tvseries.datalayer.network.response.GetVideo
-import retrofit2.Response
+import com.miracozkan.tvseries.utils.Result
 
 
 // Code with ❤
@@ -20,11 +20,14 @@ import retrofit2.Response
 class VideoRepository(val projectService: ProjectService, private val videoId: String) :
     BaseRepository() {
 
-    suspend fun getSeriesVideo(): Response<GetVideo> {
-        return projectService.getSeriesVideoAsync(videoId, BuildConfig.API_KEY).await()
+    suspend fun getSeriesVideo(): Result<GetVideo> {
+        return getResult { projectService.getSeriesVideoAsync(videoId, BuildConfig.API_KEY) }
+
     }
 
-    suspend fun getSeriesImages(): Response<GetImages> {
-        return projectService.getSeriesImageAsync(videoId, BuildConfig.API_KEY).await()
+    suspend fun getSeriesImages(): Result<GetImages> {
+        return getResult {
+            projectService.getSeriesImageAsync(videoId, BuildConfig.API_KEY)
+        }
     }
 }

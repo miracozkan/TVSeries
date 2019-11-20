@@ -1,9 +1,8 @@
 package com.miracozkan.tvseries.base
 
 import android.util.Log
-import com.miracozkan.tvseries.utils.Output
+import com.miracozkan.tvseries.utils.Result
 import retrofit2.Response
-import java.io.IOException
 
 
 // Code with ❤
@@ -18,25 +17,23 @@ import java.io.IOException
 
 abstract class BaseRepository {
 
-    suspend fun <T : Any> safeApiCall(call: suspend () -> Response<T>, error: String): T? {
-        val result = newsApiOutput(call, error)
-        var output: T? = null
-        when (result) {
-            is Output.Success ->
-                output = result.output
-            is Output.Error ->
-                Log.e("Error", "The $error and the ${result.exception}")
+    protected suspend fun <T> getResult(call: suspend () -> Response<T>): Result<T> {
+        try {
+            val response = call()
+            if (response.isSuccessful) {
+                val body = response.body()
+                if (body != null)
+                    return Result.success(body)!!
+            }
+            return error(response.message(), response.code())
+        } catch (e: Exception) {
+            return error(e.message ?: e.toString(), e.hashCode())
         }
-        return output
-
     }
 
-    private suspend fun <T : Any> newsApiOutput(call: suspend () -> Response<T>, error: String): Output<T> {
-        val response = call.invoke()
-        return if (response.isSuccessful)
-            Output.Success(response.body()!!)
-        else {
-            Output.Error(IOException("OOps .. Something went wrong due to  ${response.message()} and ${response.errorBody()} and ${response.code()}"))
-        }
+    private fun <T> error(message: String, errorCode: Int): Result<T> {
+        Log.e("BaseRepo_message -->", message)
+        Log.e("BaseRepo_cod -->", errorCode.toString())
+        return Result.error("Network call has failed for a following reason: $message")
     }
 }

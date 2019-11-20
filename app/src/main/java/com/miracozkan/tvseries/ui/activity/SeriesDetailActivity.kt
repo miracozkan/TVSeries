@@ -1,16 +1,16 @@
-package com.miracozkan.tvseries.ui
+package com.miracozkan.tvseries.ui.activity
 
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.miracozkan.tvseries.R
 import com.miracozkan.tvseries.adapter.SeriesDetailViewPagerAdapter
+import com.miracozkan.tvseries.base.BaseActivity
 import com.miracozkan.tvseries.datalayer.network.RetrofitClient
 import com.miracozkan.tvseries.reciever.InternetConnectionReciever
 import com.miracozkan.tvseries.utils.*
@@ -19,7 +19,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_series_detail.*
 
 
-class SeriesDetailActivity : AppCompatActivity(), View.OnClickListener {
+class SeriesDetailActivity : BaseActivity(), View.OnClickListener {
 
     private val internetConnectionReceiver by lazy { InternetConnectionReciever() }
 
@@ -44,9 +44,18 @@ class SeriesDetailActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_series_detail)
 
+        initUi()
+        initObserver()
+
+        lytOpenWeb.setOnClickListener(this)
+        lytOpenChannel.setOnClickListener(this)
+    }
+
+    private fun initUi() {
         setSupportActionBar(toolbar as Toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = ""
+
         scrollView.dissappearProgress()
         appBarLayout.dissappearProgress()
         scalingLayout.dissappearProgress()
@@ -55,15 +64,16 @@ class SeriesDetailActivity : AppCompatActivity(), View.OnClickListener {
             adapter = SeriesDetailViewPagerAdapter(supportFragmentManager, seriesID)
             tblSeriesDetailTitle.setupWithViewPager(this)
         }
-        lytOpenWeb.setOnClickListener(this)
-        lytOpenChannel.setOnClickListener(this)
+    }
+
+    private fun initObserver() {
         seriesDetailViewModel.seriesDetail.observe(this, Observer { _seriesDetail ->
-            when (_seriesDetail) {
-                is Resource.Failure -> {
+            when (_seriesDetail.status) {
+                Status.ERROR -> {
                     pb.hideProgress()
-                    Toast.makeText(this, _seriesDetail.cause, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, _seriesDetail.message, Toast.LENGTH_SHORT).show()
                 }
-                is Resource.Success -> {
+                Status.SUCCESS -> {
                     pb.hideProgress()
                     _seriesDetail.run {
                         webSite = data?.homepage!!
@@ -85,7 +95,7 @@ class SeriesDetailActivity : AppCompatActivity(), View.OnClickListener {
                     scrollView.showProgress()
 
                 }
-                is Resource.Loading -> {
+                Status.LOADING -> {
                     pb.showProgress()
                 }
             }
@@ -102,7 +112,6 @@ class SeriesDetailActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
     }
-
 
     override fun onResume() {
         super.onResume()

@@ -3,8 +3,8 @@ package com.miracozkan.tvseries.adapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.miracozkan.tvseries.ui.SeriesDetailsFragment
-import com.miracozkan.tvseries.ui.SeriesEpisodeFragment
+import com.miracozkan.tvseries.ui.fragment.SeriesDetailsFragment
+import com.miracozkan.tvseries.ui.fragment.SeriesEpisodeFragment
 
 
 // Code with ❤

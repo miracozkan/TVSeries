@@ -1,4 +1,6 @@
-package com.miracozkan.tvseries.utils
+package com.miracozkan.tvseries.base
+
+import androidx.fragment.app.Fragment
 
 
 // Code with ❤
@@ -7,11 +9,7 @@ package com.miracozkan.tvseries.utils
 //│ ─────────────────────────── │
 //│ mirac.ozkan123@gmail.com    │
 //│ ─────────────────────────── │
-//│ 25.08.2019 - 10:08            │
+//│ 20.11.2019 - 22:58          │
 //└─────────────────────────────┘
 
-sealed class Resource<out T> {
-    class Loading<out T> : Resource<T>()
-    data class Success<out T>(val data: T?) : Resource<T>()
-    data class Failure<out T>(val cause: String?) : Resource<T>()
-}
+open class BaseFragment : Fragment()

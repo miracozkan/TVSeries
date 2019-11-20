@@ -4,7 +4,7 @@ import com.miracozkan.tvseries.BuildConfig.API_KEY
 import com.miracozkan.tvseries.base.BaseRepository
 import com.miracozkan.tvseries.datalayer.network.ProjectService
 import com.miracozkan.tvseries.datalayer.network.response.GetPopular
-import retrofit2.Response
+import com.miracozkan.tvseries.utils.Result
 
 
 // Code with ❤
@@ -19,7 +19,7 @@ import retrofit2.Response
 class PopularSeriesRepository(private val projectService: ProjectService) :
     BaseRepository() {
 
-    suspend fun getPopularSeries(): Response<GetPopular> {
-        return projectService.getPopularSeriesAsync(API_KEY).await()
+    suspend fun getPopularSeries(): Result<GetPopular> {
+        return getResult { projectService.getPopularSeriesAsync(API_KEY) }
     }
 }

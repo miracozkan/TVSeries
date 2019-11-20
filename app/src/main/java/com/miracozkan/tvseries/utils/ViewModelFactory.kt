@@ -8,7 +8,7 @@ import com.miracozkan.tvseries.datalayer.repository.SeriesDetailRepository
 import com.miracozkan.tvseries.datalayer.repository.VideoRepository
 import com.miracozkan.tvseries.viewmodel.PopularSeriesViewModel
 import com.miracozkan.tvseries.viewmodel.SeriesDetailViewModel
-import com.miracozkan.tvseries.viewmodelgradle.VideoViewModel
+import com.miracozkan.tvseries.viewmodel.VideoViewModel
 
 
 // Code with ❤
