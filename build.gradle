@@ -9,7 +9,6 @@ buildscript {
         room = '2.1.0'
         picasso = '2.71828'
         exo_player = '2.9.6'
-        lifecycle='2.2.0-alpha02'
     }
 
     repositories {
