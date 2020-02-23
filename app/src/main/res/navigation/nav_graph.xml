@@ -18,5 +18,18 @@
             android:id="@+id/seriesSearchFragment"
             android:name="com.miracozkan.tvseries.ui.series.search.SeriesSearchFragment"
             android:label="fragment_series_search"
-            tools:layout="@layout/fragment_series_search" />
+            tools:layout="@layout/fragment_series_search">
+        <action
+                android:id="@+id/action_seriesSearchFragment_to_seriesDetailFragment"
+                app:destination="@id/seriesDetailFragment" />
+    </fragment>
+    <fragment
+            android:id="@+id/seriesDetailFragment"
+            android:name="com.miracozkan.tvseries.ui.series.detail.SeriesDetailFragment"
+            android:label="fragment_series_detail"
+            tools:layout="@layout/fragment_series_detail">
+        <action
+                android:id="@+id/action_seriesDetailFragment_to_seriesSearchFragment"
+                app:destination="@id/seriesSearchFragment" />
+    </fragment>
 </navigation>
