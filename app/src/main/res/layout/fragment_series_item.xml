@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/black"
+            tools:context=".ui.fragment.VideoFragment">
+
+        <com.google.android.exoplayer2.ui.PlayerView
+                android:id="@+id/pvExoPlayer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:resize_mode="fixed_width">
+
+        </com.google.android.exoplayer2.ui.PlayerView>
+
+        <include
+                layout="@layout/layout_video"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        <include layout="@layout/bottom_sheet_video" />
+
+        <ProgressBar
+                android:id="@+id/prgBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:minWidth="72dp"
+                android:minHeight="72dp" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>
