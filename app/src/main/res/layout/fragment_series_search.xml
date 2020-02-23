@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
+    <data>
+
+        <variable
+                name="adapter"
+                type="com.miracozkan.tvseries.ui.adapter.SeriesListPagerAdapter" />
+    </data>
+
+    <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".ui.series.search.SeriesSearchFragment">
+            android:layout_height="match_parent">
 
-        <TextView
+        <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/seriesLiseViewPager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/hello_blank_fragment" />
-
+                android:orientation="horizontal"
+                app:adapter="@{adapter}" />
     </FrameLayout>
 </layout>
