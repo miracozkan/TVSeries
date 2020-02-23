@@ -9,5 +9,14 @@
             android:id="@+id/splashFragment"
             android:name="com.miracozkan.tvseries.ui.splash.SplashFragment"
             android:label="fragment_splash"
-            tools:layout="@layout/fragment_splash" />
+            tools:layout="@layout/fragment_splash">
+        <action
+                android:id="@+id/action_splashFragment_to_seriesSearchFragment"
+                app:destination="@id/seriesSearchFragment" />
+    </fragment>
+    <fragment
+            android:id="@+id/seriesSearchFragment"
+            android:name="com.miracozkan.tvseries.ui.series.search.SeriesSearchFragment"
+            android:label="fragment_series_search"
+            tools:layout="@layout/fragment_series_search" />
 </navigation>
