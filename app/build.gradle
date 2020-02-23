@@ -6,6 +6,9 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: 'androidx.navigation.safeargs'
+
+
 androidExtensions {
     experimental = true
 }
@@ -84,6 +87,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle"
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle"
 
+    //paging
+    implementation 'android.arch.paging:runtime:1.0.1'
+
     //room
     implementation "androidx.room:room-runtime:$room"
     implementation "androidx.room:room-ktx:$room"
@@ -93,6 +99,14 @@ dependencies {
     implementation 'com.github.iammert:ScalingLayout:1.2.1'
     implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0'
+
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
+
+
+    implementation "androidx.navigation:navigation-fragment-ktx:2.3.0-alpha02"
+    implementation "androidx.navigation:navigation-ui-ktx:2.3.0-alpha02"
 
 
 }
