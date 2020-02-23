@@ -19,18 +19,17 @@ import com.miracozkan.tvseries.datalayer.model.PopularSeriesResult
 @Entity(tableName = "get_popular_table")
 data class GetPopular(
     @PrimaryKey(autoGenerate = true)
-    var sid: Int? = null,
-
+    val sid: Int? = null,
     @SerializedName("page")
     @Expose
-    var page: Int? = null,
+    val page: Int? = null,
     @SerializedName("total_results")
     @Expose
-    var totalResults: Int? = null,
+    val totalResults: Int? = null,
     @SerializedName("total_pages")
     @Expose
-    var totalPages: Int? = null,
+    val totalPages: Int? = null,
     @SerializedName("results")
     @Expose
-    var popularSeriesResults: List<PopularSeriesResult>? = null
+    val popularSeriesResults: List<PopularSeriesResult>
 )
