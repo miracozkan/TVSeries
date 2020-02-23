@@ -36,10 +36,20 @@ android {
             buildConfigField("String", "API_KEY", '"0fe5d189d83f602c873a8d9b17810c06"')
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
     packagingOptions {
         exclude 'META-INF/atomicfu.kotlin_module'
     }
