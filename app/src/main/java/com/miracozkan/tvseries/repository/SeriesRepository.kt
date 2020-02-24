@@ -3,7 +3,9 @@ package com.miracozkan.tvseries.repository
 import androidx.lifecycle.LiveData
 import com.miracozkan.tvseries.datalayer.model.PopularSeriesResult
 import com.miracozkan.tvseries.datalayer.model.Poster
+import com.miracozkan.tvseries.datalayer.model.SeriesReviews
 import com.miracozkan.tvseries.datalayer.model.VideoResult
+import com.miracozkan.tvseries.datalayer.network.response.GetSeriesDetail
 import com.miracozkan.tvseries.utils.Result
 
 
@@ -24,4 +26,7 @@ interface SeriesRepository {
 
     fun getSeriesImage(seriesId: Int): LiveData<Result<List<Poster>?>>
 
+    fun getSeriesDetail(seriesId: Int): LiveData<Result<GetSeriesDetail?>>
+
+    fun getSeriesReviews(seriesId: Int): LiveData<Result<List<SeriesReviews>?>>
 }
