@@ -1,9 +1,10 @@
 package com.miracozkan.tvseries.di.module
 
-import com.miracozkan.tvseries.ui.series.search.SeriesSearchFragment
-import com.miracozkan.tvseries.ui.series.search.item.SeriesItemFragment
+import android.app.Application
+import android.content.Context
 import dagger.Module
-import dagger.android.ContributesAndroidInjector
+import dagger.Provides
+import javax.inject.Singleton
 
 
 // Code with ❤
@@ -12,16 +13,14 @@ import dagger.android.ContributesAndroidInjector
 //│ ─────────────────────────── │
 //│ mirac.ozkan123@gmail.com    │
 //│ ─────────────────────────── │
-//│ 23.02.2020 - 12:00          │
+//│ 23.02.2020 - 15:57          │
 //└─────────────────────────────┘
 
 @Module
-abstract class FragmentModule {
-
-    @ContributesAndroidInjector
-    abstract fun contributeSeriesSearchFragment(): SeriesSearchFragment
-
-    @ContributesAndroidInjector
-    abstract fun contributeSeriesItemFragment(): SeriesItemFragment
-
+class AppModule {
+    @Singleton
+    @Provides
+    fun provideContext(application: Application): Context {
+        return application.applicationContext
+    }
 }

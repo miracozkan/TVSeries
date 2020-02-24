@@ -6,7 +6,6 @@ import com.miracozkan.tvseries.BuildConfig
 import com.miracozkan.tvseries.datalayer.network.ProjectService
 import dagger.Module
 import dagger.Provides
-import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -34,9 +33,8 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(gson: Gson, client: OkHttpClient): Retrofit.Builder {
+    fun provideRetrofit(gson: Gson): Retrofit.Builder {
         return Retrofit.Builder()
-            .client(client)
             .addConverterFactory(GsonConverterFactory.create(gson))
     }
 
