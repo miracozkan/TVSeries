@@ -1,5 +1,6 @@
 package com.miracozkan.tvseries.di.module
 
+import com.miracozkan.tvseries.ui.series.detail.SeriesDetailFragment
 import com.miracozkan.tvseries.ui.series.search.SeriesSearchFragment
 import com.miracozkan.tvseries.ui.series.search.item.SeriesItemFragment
 import dagger.Module
@@ -23,5 +24,8 @@ abstract class FragmentModule {
 
     @ContributesAndroidInjector
     abstract fun contributeSeriesItemFragment(): SeriesItemFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeSeriesDetailFragment(): SeriesDetailFragment
 
 }

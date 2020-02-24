@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.miracozkan.tvseries.di.ViewModelFactory
 import com.miracozkan.tvseries.di.key.ViewModelKey
+import com.miracozkan.tvseries.ui.series.detail.SeriesDetailViewModel
 import com.miracozkan.tvseries.ui.series.search.SeriesSearchViewModel
 import com.miracozkan.tvseries.ui.series.search.item.SeriesItemViewModel
 import dagger.Binds
@@ -35,4 +36,10 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SeriesItemViewModel::class)
     abstract fun bindSeriesItemViewModel(seriesItemViewModel: SeriesItemViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SeriesDetailViewModel::class)
+    abstract fun bindSeriesDetailViewModel(seriesDetailViewModel: SeriesDetailViewModel): ViewModel
+
 }
