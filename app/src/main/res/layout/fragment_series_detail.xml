@@ -1,16 +1,238 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <data>
+
+        <variable
+                name="adapter"
+                type="com.miracozkan.tvseries.ui.adapter.SeriesDetailPagerAdapter" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".ui.series.detail.SeriesDetailFragment">
+            android:layout_height="match_parent">
 
-        <TextView
+        <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBarLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                    app:titleEnabled="false">
+
+                <ImageView
+                        android:id="@+id/imgSeriesVideo"
+                        android:layout_width="match_parent"
+                        android:layout_height="256dp"
+                        android:scaleType="centerCrop"
+                        app:layout_collapseMode="parallax"
+                        tools:src="@drawable/ic_android" />
+
+                <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        app:layout_collapseMode="pin"
+                        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+                android:id="@+id/scrollView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/hello_blank_fragment" />
+                android:background="@color/detail_bg"
+                android:clipToPadding="false"
+                android:paddingTop="32dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    </FrameLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                <TextView
+                        android:id="@+id/txtSeriesName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="4dp"
+                        android:textColor="#ffffff"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="Mother!" />
+
+                <TextView
+                        android:id="@+id/txtSeriesInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:textColor="#ffffff"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toStartOf="@+id/txtSeriesName"
+                        app:layout_constraintTop_toBottomOf="@+id/txtSeriesName"
+                        tools:text="@string/tur" />
+
+                <TextView
+                        android:id="@+id/txtSeriesWritter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:textColor="#ffffff"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toStartOf="@+id/txtSeriesInfo"
+                        app:layout_constraintTop_toBottomOf="@+id/txtSeriesInfo"
+                        tools:text="yazarlar" />
+
+                <TextView
+                        android:id="@+id/txtStoryLine"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:textColor="#ffffff"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toStartOf="@+id/txtSeriesWritter"
+                        app:layout_constraintTop_toBottomOf="@+id/txtSeriesWritter"
+                        tools:text="@string/dizi_erik" />
+
+                <TextView
+                        android:id="@+id/txtStoryLineDesc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="4dp"
+                        android:textColor="#ffffff"
+                        android:textSize="12sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/txtStoryLine"
+                        app:layout_constraintTop_toBottomOf="@+id/txtStoryLine"
+                        tools:text="E/AppScanObserverService: Result available, null observers for user: 0E/AppScanObserverService: Result available, null observers for user: 0
+                E/AppScanObserverService: Result available, null observers for user: 0E/AppScanObserverService: Result available, null observers for user: 0
+                E/AppScanObserverService: Result available, null observers for user: 0E/AppScanObserverService: Result available, null observers for user: 0" />
+
+                <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tblSeriesDetailTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/txtStoryLineDesc"
+                        app:tabTextColor="@android:color/white" />
+
+                <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/vpSeriesDetail"
+                        android:layout_width="match_parent"
+                        android:layout_height="400dp"
+                        app:adapter="@{adapter}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tblSeriesDetailTitle" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <iammert.com.view.scalinglib.ScalingLayout
+                android:id="@+id/scalingLayout"
+                android:layout_width="300dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_horizontal"
+                android:clickable="true"
+                android:focusable="true"
+                android:stateListAnimator="@animator/sl_state_animator"
+                app:layout_behavior="iammert.com.view.scalinglib.ScalingLayoutBehavior"
+                app:radiusFactor="1">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorAccent"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp">
+
+                <RelativeLayout
+                        android:id="@+id/lytOpenWeb"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center">
+
+                    <ImageView
+                            android:id="@+id/imageViewWatchNow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_share" />
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="8dp"
+                            android:layout_toEndOf="@+id/imageViewWatchNow"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:text="@string/web_sitesi"
+                            android:textColor="#ffffff"
+                            android:textSize="18sp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                        android:id="@+id/lytOpenChannel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center">
+
+                    <ImageView
+                            android:id="@+id/imageViewWatchLater"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_add" />
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/imageViewWatchLater"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginBottom="0dp"
+                            android:layout_toEndOf="@+id/imageViewWatchLater"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:text="@string/channel_site"
+                            android:textColor="#ffffff"
+                            android:textSize="18sp" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </iammert.com.view.scalinglib.ScalingLayout>
+
+        <com.github.ybq.android.spinkit.SpinKitView
+                android:id="@+id/pb"
+                style="@style/SpinKitView.Large.Wave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:SpinKit_Color="@color/colorAccent" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
