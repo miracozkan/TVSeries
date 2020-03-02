@@ -1,121 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/lytBottomSheet"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    app:behavior_hideable="true"
-    app:behavior_peekHeight="48dp"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-    app:layout_constraintCircleRadius="24dp"
-    tools:ignore="RtlCompat">
+<layout>
 
-    <TextView
-        android:id="@+id/btmSheetName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rounded_bottom_sheet"
-        android:drawableStart="@drawable/ic_details"
-        android:drawablePadding="24dp"
-        android:gravity="center"
-        android:paddingStart="32dp"
-        android:paddingEnd="32dp"
-        android:paddingBottom="12dp"
-        android:text="@string/sw_pe_for_deta_l"
-        android:textColor="@android:color/white"
-        android:textSize="24sp" />
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/bg_bottom">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/lytBottomSheet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:behavior_hideable="true"
+            app:behavior_peekHeight="48dp"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+            app:layout_constraintCircleRadius="24dp"
+            tools:ignore="RtlCompat">
 
         <TextView
-            android:id="@+id/txtBottomDate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:textColor="#ffffff"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="@+id/txtBottomCountry"
-            app:layout_constraintTop_toBottomOf="@+id/txtBottomCountry"
-            tools:text="date" />
-
-        <TextView
-            android:id="@+id/txtBottomCountry"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:textColor="#ffffff"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="country" />
-
-        <TextView
-            android:id="@+id/txtBottomLang"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="2dp"
-            android:textColor="#ffffff"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toStartOf="@+id/txtBottomCountry"
-            app:layout_constraintTop_toTopOf="@+id/txtBottomCountry"
-            tools:text="lang" />
-
-        <TextView
-            android:id="@+id/txtBottomName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:textColor="#ffffff"
-            android:textSize="24sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="name" />
+                android:id="@+id/btmSheetName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_bottom_sheet"
+                android:drawableStart="@drawable/ic_details"
+                android:drawablePadding="24dp"
+                android:gravity="center"
+                android:paddingStart="32dp"
+                android:paddingEnd="32dp"
+                android:paddingBottom="12dp"
+                android:text="@string/sw_pe_for_deta_l"
+                android:textColor="@android:color/white"
+                android:textSize="24sp" />
 
 
-        <TextView
-            android:id="@+id/txtStoryLineDescBottom"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:textColor="#ffffff"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtBottomDate"
-            tools:text="E/AppScanObserverService: Result available, null observers for user: 0E/AppScanObserverService: Result available, null observers for user: 0
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/bg_bottom">
+
+            <TextView
+                    android:id="@+id/txtBottomDate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:textColor="#ffffff"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@+id/txtBottomCountry"
+                    app:layout_constraintTop_toBottomOf="@+id/txtBottomCountry"
+                    tools:text="date" />
+
+            <TextView
+                    android:id="@+id/txtBottomCountry"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:textColor="#ffffff"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="country" />
+
+            <TextView
+                    android:id="@+id/txtBottomLang"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2dp"
+                    android:textColor="#ffffff"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toStartOf="@+id/txtBottomCountry"
+                    app:layout_constraintTop_toTopOf="@+id/txtBottomCountry"
+                    tools:text="lang" />
+
+            <TextView
+                    android:id="@+id/txtBottomName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:textColor="#ffffff"
+                    android:textSize="24sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="name" />
+
+
+            <TextView
+                    android:id="@+id/txtStoryLineDescBottom"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:textColor="#ffffff"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txtBottomDate"
+                    tools:text="E/AppScanObserverService: Result available, null observers for user: 0E/AppScanObserverService: Result available, null observers for user: 0
                 E/AppScanObserverService: Result available, null observers for user: 0E/AppScanObserverService: Result available, null observers for user: 0
                 E/AppScanObserverService: Result available, null observers for user: 0E/AppScanObserverService: Result available, null observers for user: 0" />
 
 
-        <Button
-            android:id="@+id/btnBottomDetail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/button_gra_detail"
-            android:gravity="center"
-            android:text="@string/go_series_detail"
-            android:textColor="@android:color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtStoryLineDescBottom" />
+            <Button
+                    android:id="@+id/btnBottomDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/button_gra_detail"
+                    android:gravity="center"
+                    android:text="@string/go_series_detail"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txtStoryLineDescBottom" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-</LinearLayout>
+    </LinearLayout>
+</layout>

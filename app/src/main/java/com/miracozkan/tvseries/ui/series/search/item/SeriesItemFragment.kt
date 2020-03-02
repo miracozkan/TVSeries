@@ -9,8 +9,11 @@ import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
 import at.huber.youtubeExtractor.VideoMeta
 import at.huber.youtubeExtractor.YouTubeExtractor
 import at.huber.youtubeExtractor.YtFile
@@ -25,8 +28,10 @@ import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.upstream.*
 import com.google.android.exoplayer2.util.Util
 import com.google.android.material.snackbar.Snackbar
+import com.miracozkan.tvseries.R
 import com.miracozkan.tvseries.adapter.VideoPosterAdapter
 import com.miracozkan.tvseries.base.BaseFragment
+import com.miracozkan.tvseries.databinding.BottomSheetVideoBinding
 import com.miracozkan.tvseries.databinding.FragmentSeriesItemBinding
 import com.miracozkan.tvseries.datalayer.model.PopularSeriesResult
 import com.miracozkan.tvseries.utils.Status.*
@@ -42,6 +47,7 @@ import kotlinx.android.synthetic.main.layout_video.*
 class SeriesItemFragment : BaseFragment() {
 
     private lateinit var binding: FragmentSeriesItemBinding
+    private lateinit var bottomBinding: BottomSheetVideoBinding
     private lateinit var seriesData: PopularSeriesResult
     private lateinit var viewModel: SeriesItemViewModel
 
@@ -59,18 +65,29 @@ class SeriesItemFragment : BaseFragment() {
         binding = FragmentSeriesItemBinding.inflate(inflater, null, false)
         seriesData = arguments?.getParcelable("seriesData")!!
         viewModel.setSeriesId(seriesData.id ?: 1)
+        bottomBinding = BottomSheetVideoBinding.inflate(inflater, null, false)
         adapter = VideoPosterAdapter {
             Log.e("Clicked -> ", it.toString())
         }.also {
             binding.layoutVideo.adapter = it
         }
+
+        binding.btmLayout.btnBottomDetail.setOnClickListener {
+            val bundle = bundleOf("seriesId" to seriesData.id)
+            findNavController()
+                .navigate(
+                    R.id.seriesDetailFragment,
+                    bundle,
+                    NavOptions.Builder()
+                        .build()
+                )
+        }
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("Series Data : ", seriesData.toString())
-
         initExoPlayer()
 
         viewModel.seriesImages.observe(viewLifecycleOwner, Observer { imageResult ->
