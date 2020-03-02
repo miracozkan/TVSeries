@@ -66,11 +66,17 @@ class SeriesItemFragment : BaseFragment() {
         seriesData = arguments?.getParcelable("seriesData")!!
         viewModel.setSeriesId(seriesData.id ?: 1)
         bottomBinding = BottomSheetVideoBinding.inflate(inflater, null, false)
+
         adapter = VideoPosterAdapter {
+            // Image Click
             Log.e("Clicked -> ", it.toString())
         }.also {
             binding.layoutVideo.adapter = it
         }
+
+
+        binding.btmLayout.seriesData = seriesData
+        binding.layoutVideo.seriesData = seriesData
 
         binding.btmLayout.btnBottomDetail.setOnClickListener {
             val bundle = bundleOf("seriesId" to seriesData.id)

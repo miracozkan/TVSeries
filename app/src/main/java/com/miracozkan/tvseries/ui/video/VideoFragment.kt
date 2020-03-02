@@ -1,8 +1,7 @@
-package com.miracozkan.tvseries.ui.fragment
+package com.miracozkan.tvseries.ui.video
 
 import android.annotation.SuppressLint
 import android.app.Dialog
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -15,7 +14,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import at.huber.youtubeExtractor.VideoMeta
 import at.huber.youtubeExtractor.YouTubeExtractor
@@ -35,10 +33,11 @@ import com.miracozkan.tvseries.R
 import com.miracozkan.tvseries.adapter.VideoPosterAdapter
 import com.miracozkan.tvseries.base.BaseFragment
 import com.miracozkan.tvseries.datalayer.model.PopularSeriesResult
-import com.miracozkan.tvseries.datalayer.network.RetrofitClient
-import com.miracozkan.tvseries.ui.activity.SeriesDetailActivity
-import com.miracozkan.tvseries.utils.*
-import com.miracozkan.tvseries.viewmodel.VideoViewModel
+import com.miracozkan.tvseries.utils.Status
+import com.miracozkan.tvseries.utils.dissappearProgress
+import com.miracozkan.tvseries.utils.extensions.injectViewModel
+import com.miracozkan.tvseries.utils.hideProgress
+import com.miracozkan.tvseries.utils.showProgress
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.bottom_sheet_video.*
 import kotlinx.android.synthetic.main.fragment_video.*
@@ -47,21 +46,13 @@ import kotlinx.android.synthetic.main.layout_video.*
 
 class VideoFragment : BaseFragment(), View.OnClickListener {
 
-    private val detailActivityIntent by lazy { Intent(activity, SeriesDetailActivity::class.java) }
     private lateinit var param1: PopularSeriesResult
     private var exoPlayer: SimpleExoPlayer? = null
     private lateinit var mediaDataSourceFactory: DataSource.Factory
     private lateinit var bandwidthMeter: DefaultBandwidthMeter
 
-    private val videoRepository by lazy {
-        DependencyUtil.getVideoRepository(RetrofitClient.getClient(), param1.id.toString())
-    }
-    private val videoViewModel by lazy {
-        ViewModelProviders.of(
-            this,
-            ViewModelFactory(videoRepository)
-        ).get(VideoViewModel::class.java)
-    }
+
+    private lateinit var videoViewModel: VideoViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,6 +72,8 @@ class VideoFragment : BaseFragment(), View.OnClickListener {
     @SuppressLint("SwitchIntDef")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        videoViewModel = injectViewModel(viewModelFactory)
+        videoViewModel.setSeriesId(param1.id.toString())
         btnBottomDetail.setOnClickListener(this)
         val bottomSheet = BottomSheetBehavior.from(lytBottomSheet)
 
@@ -177,7 +170,7 @@ class VideoFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun initSeriesVidoeObserver() {
-        videoViewModel.seriesVideo.observe(this, Observer { _resource ->
+        videoViewModel.seriesVideo.observe(viewLifecycleOwner, Observer { _resource ->
             when (_resource.status) {
                 Status.LOADING -> {
                     prgBar.showProgress()
@@ -205,7 +198,7 @@ class VideoFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun initSeriesImageObserver() {
-        videoViewModel.seriesImage.observe(this, Observer { _resource ->
+        videoViewModel.seriesImages.observe(viewLifecycleOwner, Observer { _resource ->
             when (_resource.status) {
                 Status.LOADING -> {
                     prgBar.showProgress()
@@ -324,8 +317,7 @@ class VideoFragment : BaseFragment(), View.OnClickListener {
 
             }
             R.id.btnBottomDetail -> {
-                detailActivityIntent.putExtra("seriesID", param1.id)
-                startActivity(detailActivityIntent)
+
             }
         }
     }

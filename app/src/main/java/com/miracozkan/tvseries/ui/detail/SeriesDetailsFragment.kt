@@ -1,4 +1,4 @@
-package com.miracozkan.tvseries.ui.fragment
+package com.miracozkan.tvseries.ui.detail
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,35 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.miracozkan.tvseries.R
 import com.miracozkan.tvseries.adapter.SeriesCastAdapter
 import com.miracozkan.tvseries.adapter.SeriesReviewAdapter
 import com.miracozkan.tvseries.base.BaseFragment
-import com.miracozkan.tvseries.datalayer.network.RetrofitClient
-import com.miracozkan.tvseries.utils.DependencyUtil
 import com.miracozkan.tvseries.utils.Status
-import com.miracozkan.tvseries.utils.ViewModelFactory
+import com.miracozkan.tvseries.utils.extensions.injectViewModel
 import com.miracozkan.tvseries.utils.hideProgress
-import com.miracozkan.tvseries.viewmodel.SeriesDetailViewModel
 import kotlinx.android.synthetic.main.fragment_series_details.*
 
 
 class SeriesDetailsFragment : BaseFragment() {
-    private val seriesDetailRepository by lazy {
-        DependencyUtil.getSeriesDetailRepository(
-            RetrofitClient.getClient(),
-            seriesID = param1!!
-        )
-    }
-    private val seriesDetailViewModel by lazy {
-        ViewModelProviders.of(
-            this,
-            ViewModelFactory(seriesDetailRepository)
-        ).get(SeriesDetailViewModel::class.java)
-    }
 
+    private lateinit var seriesDetailViewModel: SeriesDetailViewModel
     private var param1: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +38,8 @@ class SeriesDetailsFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        seriesDetailViewModel = injectViewModel(viewModelFactory)
+        seriesDetailViewModel.setSeriesId(param1 ?: 1)
         initUi()
         initDetailObserver()
         initReviewsObserver()
@@ -71,7 +58,7 @@ class SeriesDetailsFragment : BaseFragment() {
     }
 
     private fun initReviewsObserver() {
-        seriesDetailViewModel.seriesReviews.observe(this, Observer { _reviews ->
+        seriesDetailViewModel.seriesReviews.observe(viewLifecycleOwner, Observer { _reviews ->
 
             when (_reviews.status) {
                 Status.LOADING -> {
@@ -96,7 +83,7 @@ class SeriesDetailsFragment : BaseFragment() {
     }
 
     private fun initDetailObserver() {
-        seriesDetailViewModel.seriesDetail.observe(this, Observer { _seriesDetail ->
+        seriesDetailViewModel.seriesDetail.observe(viewLifecycleOwner, Observer { _seriesDetail ->
 
             when (_seriesDetail.status) {
                 Status.ERROR -> {

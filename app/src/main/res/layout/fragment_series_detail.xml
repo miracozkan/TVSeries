@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-    <data>
-
-        <variable
-                name="adapter"
-                type="com.miracozkan.tvseries.ui.adapter.SeriesDetailPagerAdapter" />
-    </data>
-
     <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
@@ -39,7 +32,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
                         app:layout_collapseMode="pin"
-                        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                        app:titleTextColor="@android:color/white" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -125,6 +119,7 @@
                         android:id="@+id/tblSeriesDetailTitle"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
+                        app:tabMode="fixed"
                         android:layout_marginTop="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -135,7 +130,6 @@
                         android:id="@+id/vpSeriesDetail"
                         android:layout_width="match_parent"
                         android:layout_height="400dp"
-                        app:adapter="@{adapter}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

@@ -2,8 +2,8 @@ package com.miracozkan.tvseries.ui.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.miracozkan.tvseries.ui.fragment.SeriesDetailsFragment
-import com.miracozkan.tvseries.ui.fragment.SeriesEpisodeFragment
+import com.miracozkan.tvseries.ui.detail.SeriesDetailsFragment
+import com.miracozkan.tvseries.ui.detail.SeriesEpisodeFragment
 
 
 // Code with ❤
@@ -25,16 +25,11 @@ class SeriesDetailPagerAdapter(fa: Fragment, seriesID: Int) : FragmentStateAdapt
     }
 
     private val fragmentList: ArrayList<Fragment>
-    private val fragmentTitleList: ArrayList<String>
 
     init {
         fragmentList = ArrayList<Fragment>().apply {
             add(seriesDetailFragment)
             add(seriesEpisodeFragnent)
-        }
-        fragmentTitleList = ArrayList<String>().apply {
-            add("Detail | Reviews")
-            add("Episodes")
         }
     }
 

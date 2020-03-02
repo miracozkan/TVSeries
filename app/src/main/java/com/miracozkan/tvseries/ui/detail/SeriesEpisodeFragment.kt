@@ -1,4 +1,4 @@
-package com.miracozkan.tvseries.ui.fragment
+package com.miracozkan.tvseries.ui.detail
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,14 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.miracozkan.tvseries.R
 import com.miracozkan.tvseries.adapter.SeriesSeasonsAdapter
 import com.miracozkan.tvseries.base.BaseFragment
-import com.miracozkan.tvseries.datalayer.network.RetrofitClient
-import com.miracozkan.tvseries.utils.*
-import com.miracozkan.tvseries.viewmodel.SeriesDetailViewModel
+import com.miracozkan.tvseries.utils.Status
+import com.miracozkan.tvseries.utils.extensions.injectViewModel
+import com.miracozkan.tvseries.utils.hideProgress
+import com.miracozkan.tvseries.utils.showProgress
 import kotlinx.android.synthetic.main.fragment_series_episode.*
 
 
@@ -21,17 +21,8 @@ class SeriesEpisodeFragment : BaseFragment() {
 
     private var param1: Int? = null
 
-    private val seriesDetailRepository by lazy {
-        DependencyUtil.getSeriesDetailRepository(
-            RetrofitClient.getClient(), seriesID = param1!!
-        )
-    }
-    private val seriesDetailViewModel by lazy {
-        ViewModelProviders.of(
-            activity!!,
-            ViewModelFactory(seriesDetailRepository)
-        ).get(SeriesDetailViewModel::class.java)
-    }
+
+    private lateinit var seriesDetailViewModel: SeriesDetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +41,8 @@ class SeriesEpisodeFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initUi()
+        seriesDetailViewModel = injectViewModel(viewModelFactory)
+        seriesDetailViewModel.setSeriesId(param1 ?: 1)
         initObserver()
     }
 
@@ -61,7 +54,7 @@ class SeriesEpisodeFragment : BaseFragment() {
     }
 
     private fun initObserver() {
-        seriesDetailViewModel.seriesDetail.observe(this, Observer { _it ->
+        seriesDetailViewModel.seriesDetail.observe(viewLifecycleOwner, Observer { _it ->
             when (_it.status) {
                 Status.LOADING -> {
                     //TODO may add progress bar

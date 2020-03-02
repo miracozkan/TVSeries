@@ -4,6 +4,9 @@
     <data>
 
         <variable
+                name="seriesData"
+                type="com.miracozkan.tvseries.datalayer.model.PopularSeriesResult" />
+        <variable
                 name="adapter"
                 type="com.miracozkan.tvseries.adapter.VideoPosterAdapter" />
     </data>
@@ -73,6 +76,7 @@
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/txtDislike"
                 app:layout_constraintStart_toStartOf="@+id/txtDislike"
+                android:text="@{seriesData.name}"
                 tools:text="Rampage" />
 
         <com.facebook.shimmer.ShimmerFrameLayout

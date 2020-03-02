@@ -1,8 +1,8 @@
-package com.miracozkan.tvseries.ui.series.detail
+package com.miracozkan.tvseries.ui.detail
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.switchMap
+import com.miracozkan.tvseries.base.BaseViewModel
 import com.miracozkan.tvseries.repository.SeriesRepository
 import javax.inject.Inject
 
@@ -11,12 +11,13 @@ import javax.inject.Inject
 //┌─────────────────────────────┐
 //│ Created by Mirac OZKAN      │
 //│ ─────────────────────────── │
-//│ mirac.ozkan123@gmail.com    │
+//│ mirac.ozkan123@gmail.com    │            
 //│ ─────────────────────────── │
-//│ 24.02.2020 - 20:00          │
+//│ 18/07/19 - 10:06            │
 //└─────────────────────────────┘
 
-class SeriesDetailsViewModel @Inject constructor(seriesRepository: SeriesRepository) : ViewModel() {
+class SeriesDetailViewModel @Inject constructor(private val seriesRepository: SeriesRepository) :
+    BaseViewModel() {
 
     private val _seriesId = MutableLiveData<Int>()
 
@@ -31,6 +32,5 @@ class SeriesDetailsViewModel @Inject constructor(seriesRepository: SeriesReposit
     fun setSeriesId(seriesId: Int) {
         _seriesId.postValue(seriesId)
     }
-
 
 }

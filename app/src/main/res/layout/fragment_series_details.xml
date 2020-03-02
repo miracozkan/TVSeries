@@ -10,7 +10,7 @@
         android:background="@color/detail_bg"
         android:orientation="vertical"
         android:paddingBottom="16dp"
-            tools:context=".ui.fragment.SeriesDetailsFragment">
+            tools:context=".ui.detail.SeriesDetailsFragment">
 
 
         <TextView

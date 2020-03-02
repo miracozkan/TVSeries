@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.miracozkan.tvseries.datalayer.model.PopularSeriesResult
-import com.miracozkan.tvseries.ui.fragment.VideoFragment
+import com.miracozkan.tvseries.ui.video.VideoFragment
 
 
 // Code with ❤

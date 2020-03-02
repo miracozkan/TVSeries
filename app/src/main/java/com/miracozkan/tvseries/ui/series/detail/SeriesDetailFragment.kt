@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import com.google.android.material.tabs.TabLayoutMediator
 import com.miracozkan.tvseries.base.BaseFragment
 import com.miracozkan.tvseries.databinding.FragmentSeriesDetailBinding
 import com.miracozkan.tvseries.ui.adapter.SeriesDetailPagerAdapter
@@ -17,15 +18,19 @@ import com.miracozkan.tvseries.utils.extensions.injectViewModel
 import com.miracozkan.tvseries.utils.hideProgress
 import com.miracozkan.tvseries.utils.showProgress
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_series_detail.*
 
 /**
  * A simple [Fragment] subclass.
  */
 class SeriesDetailFragment : BaseFragment() {
 
+    private val tabTitleList = listOf(
+        "Detail | Reviews",
+        "Episodes"
+    )
+
     private lateinit var binding: FragmentSeriesDetailBinding
-    private lateinit var viewModel: SeriesDetailViewModel
+    private lateinit var viewModel: SeriesDetailsViewModel
     private val seriesId by lazy {
         SeriesDetailFragmentArgs.fromBundle(arguments!!).seriesId
     }
@@ -50,7 +55,13 @@ class SeriesDetailFragment : BaseFragment() {
         binding.appBarLayout.dissappearProgress()
         binding.scalingLayout.dissappearProgress()
         vpAdapter = SeriesDetailPagerAdapter(this@SeriesDetailFragment, seriesId)
-        binding.adapter = vpAdapter
+        binding.vpSeriesDetail.adapter = vpAdapter
+        TabLayoutMediator(
+            binding.tblSeriesDetailTitle,
+            binding.vpSeriesDetail,
+            TabLayoutMediator.TabConfigurationStrategy { tab, position ->
+                tab.text = tabTitleList[position]
+            }).attach()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,24 +70,26 @@ class SeriesDetailFragment : BaseFragment() {
         viewModel.seriesDetail.observe(viewLifecycleOwner, Observer { _seriesDetail ->
             when (_seriesDetail.status) {
                 Status.ERROR -> {
-                    pb.hideProgress()
+                    binding.pb.hideProgress()
                     Toast.makeText(activity!!, _seriesDetail.message, Toast.LENGTH_SHORT).show()
                 }
                 Status.SUCCESS -> {
-                    pb.hideProgress()
-                    _seriesDetail.run {
-                        webSite = data?.homepage!!
-                        channelSite = data.networks?.first()?.name!!
-                        data.genres?.forEach { _it ->
+                    binding.pb.hideProgress()
+                    _seriesDetail.data?.run {
+                        webSite = homepage ?: "Empty"
+                        channelSite = networks?.let {
+                            it.first().name ?: "Empty"
+                        }.toString()
+                        genres?.forEach { _it ->
                             binding.txtSeriesInfo.append(_it.name + " - ")
                         }
-                        data.createdBy?.forEach { _it ->
+                        createdBy?.forEach { _it ->
                             binding.txtSeriesWritter.append(_it.name + " - ")
                         }
-                        binding.txtSeriesName.text = data.name
-                        binding.txtStoryLineDesc.text = data.overview
+                        binding.txtSeriesName.text = name
+                        binding.txtStoryLineDesc.text = overview
                         Picasso.get()
-                            .load("https://image.tmdb.org/t/p/w500" + data.backdropPath)
+                            .load("https://image.tmdb.org/t/p/w500$backdropPath")
                             .into(binding.imgSeriesVideo)
                     }
                     binding.appBarLayout.showProgress()

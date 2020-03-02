@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
+    <data>
+
+        <variable
+                name="seriesData"
+                type="com.miracozkan.tvseries.datalayer.model.PopularSeriesResult" />
+    </data>
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
@@ -40,6 +47,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
+                    android:text="@{seriesData.firstAirDate}"
                     android:textColor="#ffffff"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="@+id/txtBottomCountry"
@@ -53,6 +61,7 @@
                     android:layout_margin="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
+                    android:text="@{seriesData.originCountry.get(0)}"
                     android:textColor="#ffffff"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -64,6 +73,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="2dp"
+                    android:text="@{seriesData.originalLanguage}"
                     android:textColor="#ffffff"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toStartOf="@+id/txtBottomCountry"
@@ -76,6 +86,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:text="@{seriesData.name}"
                     android:textColor="#ffffff"
                     android:textSize="24sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -91,6 +102,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
+                    android:text="@{seriesData.overview}"
                     android:textColor="#ffffff"
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"

@@ -1,8 +1,8 @@
-package com.miracozkan.tvseries.ui.series.detail
+package com.miracozkan.tvseries.ui.video
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.switchMap
+import com.miracozkan.tvseries.base.BaseViewModel
 import com.miracozkan.tvseries.repository.SeriesRepository
 import javax.inject.Inject
 
@@ -11,26 +11,23 @@ import javax.inject.Inject
 //┌─────────────────────────────┐
 //│ Created by Mirac OZKAN      │
 //│ ─────────────────────────── │
-//│ mirac.ozkan123@gmail.com    │
+//│ mirac.ozkan123@gmail.com    │            
 //│ ─────────────────────────── │
-//│ 24.02.2020 - 20:00          │
+//│ 13/07/19 - 17:50            │
 //└─────────────────────────────┘
 
-class SeriesDetailsViewModel @Inject constructor(seriesRepository: SeriesRepository) : ViewModel() {
+class VideoViewModel @Inject constructor(private val seriesRepository: SeriesRepository) :
+    BaseViewModel() {
 
-    private val _seriesId = MutableLiveData<Int>()
-
-    val seriesDetail = _seriesId.switchMap {
-        seriesRepository.getSeriesDetail(it)
+    private val _seriesID = MutableLiveData<String>()
+    val seriesVideo = _seriesID.switchMap {
+        seriesRepository.getSeriesVideo(it.toInt())
+    }
+    val seriesImages = _seriesID.switchMap {
+        seriesRepository.getSeriesImage(it.toInt())
     }
 
-    val seriesReviews = _seriesId.switchMap {
-        seriesRepository.getSeriesReviews(it)
+    fun setSeriesId(seriesId: String) {
+        _seriesID.postValue(seriesId)
     }
-
-    fun setSeriesId(seriesId: Int) {
-        _seriesId.postValue(seriesId)
-    }
-
-
 }
